@@ -1,4 +1,4 @@
-package com.example.mytennis.ui;
+package com.example.mytennis.ui.Home;
 
 import android.os.Bundle;
 
