@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "133897298093",
+    "project_id": "mytennis-project-6f8e7",
+    "storage_bucket": "mytennis-project-6f8e7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:133897298093:android:fa1f84a538b74924732624",
+        "android_client_info": {
+          "package_name": "com.example.mytennis"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "133897298093-eua6m9e8n1lvajr1592jmmf5uo6sttqq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUwz60DVo8hdkcKtYqprA_MLLiItCiay4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "133897298093-eua6m9e8n1lvajr1592jmmf5uo6sttqq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
