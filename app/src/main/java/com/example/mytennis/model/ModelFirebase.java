@@ -27,23 +27,36 @@ public class ModelFirebase {
         db.setFirestoreSettings(settings);
     }
 
-    public void registerUser(String email, String password, String fullname, String username) {
+
+
+    public void registerUser(String email, String password, String fullname, String username,Model.RegisterListener listener ) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
                         User user = new User(fullname,username,email);
-
                         FirebaseDatabase.getInstance().getReference("Users")
                                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                 .setValue(user).addOnCompleteListener(task1 -> {
                                     if(task1.isSuccessful()) {
                                         Toast.makeText(MyApplication.getContext(), "User has been registered successfully!", Toast.LENGTH_LONG).show();
-                                    }else {
+                                     }else {
                                         Toast.makeText(MyApplication.getContext(), "Failed to register, try again!!", Toast.LENGTH_LONG).show();
                                     }
-                                });
+                        });
+                        listener.onComplete();
+                    }else{
+                        Toast.makeText(MyApplication.getContext(), "Failed to register, try again!!", Toast.LENGTH_LONG).show();
                     }
                 });
+    }
 
+    public void loginUser(String email, String password, Model.LoginListener listener) {
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                listener.onComplete();
+            }else {
+                Toast.makeText(MyApplication.getContext(), "Failed to login", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

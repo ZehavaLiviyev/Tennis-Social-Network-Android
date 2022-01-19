@@ -38,6 +38,7 @@ public class RegisterFragment extends Fragment {
         progressBar.setVisibility(View.GONE);
 
         register_btn.setOnClickListener(v -> {
+
             registerUser(view);
         });
 
@@ -83,9 +84,8 @@ public class RegisterFragment extends Fragment {
             return;
         }
 
-        Model.instance.registerUser(email,password,fullname,username);
+        Model.instance.registerUser(email, password, fullname, username, () -> Navigation.findNavController(view).navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()));
         //progressBar.setVisibility(View.VISIBLE);
-        Navigation.findNavController(view).navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment());
 
     }
 
