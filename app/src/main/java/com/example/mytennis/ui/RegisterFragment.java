@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,9 +89,17 @@ public class RegisterFragment extends Fragment {
             return;
         }
 
-        Model.instance.registerUser(email, password, fullname, username, () -> Navigation.findNavController(view).navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()));
-        //progressBar.setVisibility(View.VISIBLE);
+        Model.instance.registerUser(email, password, fullname, username, new Model.RegisterListener() {
+            @Override
+            public void onComplete() {
+                Navigation.findNavController(view).navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment());
+            }
 
+            @Override
+            public void onAddUser() {
+                Log.d("TAG","onComplete -  register");
+            }
+        });
     }
 
 

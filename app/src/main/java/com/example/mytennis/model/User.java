@@ -3,7 +3,9 @@ package com.example.mytennis.model;
 import android.widget.ImageView;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.FieldValue;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class User {
@@ -20,7 +22,6 @@ public class User {
     public User(String fullName, String userName,String email) {
         this.fullName = fullName;
         this.userName = userName;
-     //   this.password = password;
         this.email=email;
     }
 
@@ -49,13 +50,7 @@ public class User {
         this.userName = userName;
     }
 
-  //  public String getPassword() {
-  //      return password;
-   // }
 
-   // public void setPassword(String password) {
-   //     this.password = password;
-   // }
 
     public String getEmail() {
         return email;
@@ -66,9 +61,12 @@ public class User {
     }
 
 
-
-
-
-
-
+    public Map<String, Object> toJson() {
+        Map<String, Object> json = new HashMap<String, Object>();
+        json.put("fullName",fullName);
+        json.put("userName",userName);
+        json.put("email",email);
+       // json.put("updateDate", FieldValue.serverTimestamp());
+        return json;
+    }
 }
