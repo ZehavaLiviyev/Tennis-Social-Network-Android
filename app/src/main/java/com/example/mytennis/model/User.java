@@ -2,8 +2,13 @@ package com.example.mytennis.model;
 
 import android.widget.ImageView;
 
+import com.google.firebase.Timestamp;
+
+import java.util.Map;
+
 public class User {
 
+    public static final String COLLECTION_NAME = "Users";
     String fullName="";
     String userName="";
    // String password="";
@@ -17,6 +22,14 @@ public class User {
         this.userName = userName;
      //   this.password = password;
         this.email=email;
+    }
+
+    public static User create(Map<String, Object> json) {
+        String fullName = (String) json.get("fullName");
+        String userName = (String) json.get("userName");
+        String email = (String) json.get("email");
+        User user = new User(fullName, userName, email);
+         return user;
     }
 
 

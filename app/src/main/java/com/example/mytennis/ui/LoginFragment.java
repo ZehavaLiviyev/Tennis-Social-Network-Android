@@ -17,7 +17,7 @@ import com.example.mytennis.model.Model;
 
 public class LoginFragment extends Fragment {
     EditText  emailEt, passwordEt;
-    Button login_btn;
+    Button login_btn,newaccount_btn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -28,9 +28,15 @@ public class LoginFragment extends Fragment {
         passwordEt =view.findViewById(R.id.frag_login_Password);
 
         login_btn = view.findViewById(R.id.frag_login_btn);
+        newaccount_btn = view.findViewById(R.id.frag_login_newaccount_btn);
+
         login_btn.setOnClickListener(v -> {
             loginUser(view);
         });
+        newaccount_btn.setOnClickListener(v -> {
+            Navigation.findNavController(view).navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment());
+        });
+
 
         return view;
     }

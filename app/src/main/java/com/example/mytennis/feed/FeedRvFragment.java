@@ -1,60 +1,64 @@
 package com.example.mytennis.feed;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.mytennis.R;
+import com.example.mytennis.model.Model;
+import com.example.mytennis.model.Post;
+
+import java.util.List;
 
 
-public class FeedFragment extends Fragment {
+public class FeedRvFragment extends Fragment {
+    List<Post> data;
 
-    FeedViewModel viewModel;
-    MyAdapter adapter;
+    @Nullable
     @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        viewModel = new ViewModelProvider(this).get(FeedViewModel.class);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-       View view=  inflater.inflate(R.layout.fragment_feed, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_feed,container,false);
+        data = Model.instance.getAll();
 
         RecyclerView list = view.findViewById(R.id.feed_rv);
         list.setHasFixedSize(true);
+
         list.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new MyAdapter();
+
+        MyAdapter adapter = new MyAdapter();
         list.setAdapter(adapter);
+
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View v,int position) {
-             //   String stId = viewModel.getData().getValue().get(position).getId();
-                //   Navigation.findNavController(v).navigate(StudentListRvFragmentDirections.actionStudentListRvFragmentToStudentDetailsFragment(stId));
+                //String stId = data.get(position).getId();
+                //Navigation.findNavController(v).navigate(StudentListRvFragmentDirections.actionStudentListRvFragmentToStudentDetailsFragment(stId));
+                Log.d("TAG","row was clicked " + position);
+
             }
         });
+
 
         return view;
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder{
-        TextView postTv;
-
+        TextView desc_tv;
 
         public MyViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
-            postTv = itemView.findViewById(R.id.feedPost_tv);
-
+            desc_tv = itemView.findViewById(R.id.feedPost_row_des_tv);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -64,10 +68,10 @@ public class FeedFragment extends Fragment {
             });
         }
     }
+
     interface OnItemClickListener{
         void onItemClick(View v,int position);
     }
-
     class MyAdapter extends RecyclerView.Adapter<MyViewHolder>{
 
         OnItemClickListener listener;
@@ -78,31 +82,21 @@ public class FeedFragment extends Fragment {
         @NonNull
         @Override
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = getLayoutInflater().inflate(R.layout.feed_post,parent,false);
+            View view = getLayoutInflater().inflate(R.layout.feed_post_row,parent,false);
             MyViewHolder holder = new MyViewHolder(view,listener);
             return holder;
         }
 
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-//            Student student = viewModel.getData().getValue().get(position);
-//            holder.postTv.setText(student.getName());
-
+            Post post = data.get(position);
+            holder.desc_tv.setText(post.getDescription());
         }
 
         @Override
         public int getItemCount() {
-//            if(viewModel.getData().getValue() == null){
-//                return 0;
-//            }
-//            return viewModel.getData().getValue().size();
-           return 0;
+            return data.size();
         }
-
     }
-
-
-
-
 
 }

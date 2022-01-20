@@ -20,7 +20,7 @@ import com.example.mytennis.model.Model;
 public class RegisterFragment extends Fragment {
 
     EditText fullnameEt, usernameEt, emailEt, passwordEt;
-    Button register_btn;
+    Button register_btn,account_btn;
     ProgressBar progressBar;
 
     @Override
@@ -35,10 +35,14 @@ public class RegisterFragment extends Fragment {
 
         register_btn =view.findViewById(R.id.frag_reg_register_btn);
         progressBar = view.findViewById(R.id.frag_reg_progressBar);
+        account_btn = view.findViewById(R.id.frag_reg_login_btn);
         progressBar.setVisibility(View.GONE);
 
-        register_btn.setOnClickListener(v -> {
+        account_btn.setOnClickListener(v -> {
+            Navigation.findNavController(view).navigateUp();
+        });
 
+        register_btn.setOnClickListener(v -> {
             registerUser(view);
         });
 
