@@ -34,6 +34,6 @@ public class ProfileFragment extends Fragment {
     // TODO blocking the previous page (when we go back after the logout action)
     private void logout(View view) {
         Model.instance.logout();
-        Navigation.findNavController(view).navigate(ProfileFragmentDirections.actionProfileFragmentToLoginFragment());
+        Navigation.findNavController(view).navigate(ProfileFragmentDirections.actionGlobalProfileFragment());
     }
 }

@@ -6,6 +6,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
+import java.util.Map;
+
 
 public class ModelFirebase {
 
@@ -38,13 +40,13 @@ public class ModelFirebase {
                             }
                         });
 
-                        // add to users collection
-//                        Map<String, Object> json = user.toJson();
-//                        db.collection(User.COLLECTION_NAME)
-//                                .document(user.getUserName())
-//                                .set(json)
-//                                .addOnSuccessListener(unused -> listener.onAddUser())
-//                                .addOnFailureListener(e -> listener.onAddUser());
+                        //add to users collection
+                        Map<String, Object> json = user.toJson();
+                        db.collection(User.COLLECTION_NAME)
+                                .document(user.getUserName())
+                                .set(json)
+                                .addOnSuccessListener(unused -> listener.onAddUser())
+                                .addOnFailureListener(e -> listener.onAddUser());
 
 
                         listener.onComplete();

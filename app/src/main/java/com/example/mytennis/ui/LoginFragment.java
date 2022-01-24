@@ -71,7 +71,7 @@ public class LoginFragment extends Fragment {
         Model.instance.loginUser(email, password, () -> {
             Navigation.findNavController(view)
                     .navigate(LoginFragmentDirections
-                            .actionLoginFragmentToProfileFragment());
+                            .actionLoginFragmentToFeedRvFragment());
         });
 
     }
