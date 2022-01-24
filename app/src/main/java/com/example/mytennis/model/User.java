@@ -1,28 +1,25 @@
 package com.example.mytennis.model;
 
 import android.widget.ImageView;
-
-import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.FieldValue;
-
 import java.util.HashMap;
 import java.util.Map;
 
 public class User {
 
     public static final String COLLECTION_NAME = "Users";
-    String fullName="";
-    String userName="";
-   // String password="";
-    String email="";
+    String fullName = "";
+    String userName = "";
+    String email = "";
     ImageView profilePicture;
 
 
-    public User(){}
-    public User(String fullName, String userName,String email) {
+    public User() {
+    }
+
+    public User(String fullName, String userName, String email) {
         this.fullName = fullName;
         this.userName = userName;
-        this.email=email;
+        this.email = email;
     }
 
     public static User create(Map<String, Object> json) {
@@ -30,7 +27,7 @@ public class User {
         String userName = (String) json.get("userName");
         String email = (String) json.get("email");
         User user = new User(fullName, userName, email);
-         return user;
+        return user;
     }
 
 
@@ -51,7 +48,6 @@ public class User {
     }
 
 
-
     public String getEmail() {
         return email;
     }
@@ -63,10 +59,9 @@ public class User {
 
     public Map<String, Object> toJson() {
         Map<String, Object> json = new HashMap<String, Object>();
-        json.put("fullName",fullName);
-        json.put("userName",userName);
-        json.put("email",email);
-       // json.put("updateDate", FieldValue.serverTimestamp());
+        json.put("fullName", fullName);
+        json.put("userName", userName);
+        json.put("email", email);
         return json;
     }
 }

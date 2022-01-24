@@ -1,16 +1,11 @@
 package com.example.mytennis.model;
-
-
 import android.widget.Toast;
-
 import com.example.mytennis.MyApplication;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
-
-import java.util.Map;
 
 public class ModelFirebase {
 
@@ -50,6 +45,7 @@ public class ModelFirebase {
 //                                .set(json)
 //                                .addOnSuccessListener(unused -> listener.onAddUser())
 //                                .addOnFailureListener(e -> listener.onAddUser());
+
 
                         listener.onComplete();
                     } else {
