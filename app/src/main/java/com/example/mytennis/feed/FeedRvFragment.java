@@ -129,7 +129,7 @@ public class FeedRvFragment extends Fragment {
                     Navigation.findNavController(this.view).navigate(R.id.action_global_aboutFragment);
                     break;
                 case R.id.menu_profile:
-                   Navigation.findNavController(this.view).navigate(R.id.action_global_profileFragment);
+                    Navigation.findNavController(this.view).navigate(R.id.action_global_profileFragment);
                     break;
                 case R.id.menu_search:
                     break;

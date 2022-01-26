@@ -1,5 +1,6 @@
 package com.example.mytennis.model;
 
+import android.graphics.Bitmap;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.Map;
 
@@ -20,6 +22,10 @@ public class ModelFirebase {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+
+
 
 
     public ModelFirebase() {
@@ -55,7 +61,7 @@ public class ModelFirebase {
                                 .addOnSuccessListener(unused -> listener.onAddUser())
                                 .addOnFailureListener(e -> listener.onAddUser());//add to users collection
 
-                        db.collection("Emails")
+                        db.collection(User.COLLECTION_EMAIL_NAME)
                                 .document(user.getEmail())
                                 .set(json)
                                 .addOnSuccessListener(unused -> listener.onAddUser())
@@ -86,7 +92,7 @@ public class ModelFirebase {
 
     public void getUserByuserEmail(String email, Model.GetUserByuserName listener) {
 
-        db.collection("Emails")
+        db.collection(User.COLLECTION_EMAIL_NAME)
                 .document(email)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -96,23 +102,23 @@ public class ModelFirebase {
                         if (task.isSuccessful() & task.getResult() != null) {
                             user = User.create(task.getResult().getData());
                         }
-                        db.collection(User.COLLECTION_NAME)
-                                .document(user.userName)
-                                .get()
-                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                        User user = null;
-                                        if (task.isSuccessful() & task.getResult() != null) {
-                                            user = User.create(task.getResult().getData());
-                                        }
-                                        listener.onComplete(user);
-                                    }
-                                });
+                        listener.onComplete(user);
                     }
                 });
 
     }
 
 
+    public void addPost(Post post, Model.AddPostListener listener) {
+        Map<String, Object> json = post.toJson();
+        db.collection(Post.COLLECTION_NAME)
+                .document(String.valueOf(post.getId()))
+                .set(json)
+                .addOnSuccessListener(unused -> listener.onComplete())
+                .addOnFailureListener(e -> listener.onComplete());
+
+    }
+
+    public void saveImage(Bitmap imageBitmap, String imageName, Model.SaveImagePostListener listener) {
+    }
 }

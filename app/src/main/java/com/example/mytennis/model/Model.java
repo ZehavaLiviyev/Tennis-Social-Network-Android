@@ -1,5 +1,7 @@
 package com.example.mytennis.model;
 
+import android.graphics.Bitmap;
+
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.LinkedList;
@@ -13,11 +15,15 @@ public class Model {
     ModelFirebase modelFirebase = new ModelFirebase();
     List<Post> data = new LinkedList<Post>();
     User activeUser = null;
+    Integer postId=0;
 
+    public Integer getPostId() {
+        return postId;
+    }
 
     private Model() {
         for (int i = 0; i < 10; i++) {
-            Post s = new Post("des");
+            Post s = new Post("des",i);
             data.add(s);
         }
     }
@@ -31,7 +37,28 @@ public class Model {
         return activeUser;
     }
 
+    public void setPostId(int i) {
+        postId=i;
+    }
+
+    public void saveImage(Bitmap imageBitmap, String imageName, SaveImagePostListener listener) {
+        modelFirebase.saveImage(imageBitmap,imageName,listener);
+    }
+
+    public void addPost(Post post, AddPostListener listener) {
+        modelFirebase.addPost(post,listener);
+    }
+
     // interfaces
+
+    public interface AddPostListener{
+        void onComplete();
+    }
+
+    public interface SaveImagePostListener{
+        void onComplete(String url);
+    }
+
     public interface RegisterListener {
         void onComplete();
 

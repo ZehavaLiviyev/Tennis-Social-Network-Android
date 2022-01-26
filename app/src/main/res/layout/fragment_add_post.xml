@@ -8,12 +8,12 @@
 
 
     <ImageView
-        android:id="@+id/frag_addP_iv"
+        android:id="@+id/frag_addP_iv_p"
         android:layout_width="102dp"
         android:layout_height="141dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="136dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.197"
+        app:layout_constraintHorizontal_bias="0.226"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/tennis" />
@@ -21,13 +21,44 @@
     <EditText
         android:id="@+id/frag_addP_desc_tv"
         android:layout_width="184dp"
-        android:hint="description"
         android:layout_height="198dp"
-        android:layout_marginBottom="212dp"
+        android:layout_marginBottom="152dp"
         android:ems="10"
+        android:hint="description"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/frag_addP_post_btn"
+        android:layout_width="147dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="32dp"
+        android:text="Post"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.867"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/frag_addP_cam_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_camera"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frag_addP_post_btn"
+        app:layout_constraintVertical_bias="0.097"
+        tools:layout_editor_absoluteX="320dp" />
+
+    <ImageButton
+        android:id="@+id/frag_addP_gallery_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_gallery"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/frag_addP_cam_btn"
+        app:layout_constraintTop_toBottomOf="@+id/frag_addP_cam_btn"
+        app:layout_constraintVertical_bias="0.097" />
 </androidx.constraintlayout.widget.ConstraintLayout>

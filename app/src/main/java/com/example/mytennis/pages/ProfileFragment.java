@@ -45,7 +45,8 @@ public class ProfileFragment extends Fragment {
 
     private void logout() {
         Model.instance.logout(() -> {
-            Navigation.findNavController(this.view).navigate(ProfileFragmentDirections.actionProfileFragmentToLoginFragment());
+            Navigation.findNavController(this.view)
+                    .navigate(ProfileFragmentDirections.actionProfileFragmentToLoginFragment());
         });
 
     }
