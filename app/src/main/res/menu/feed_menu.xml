@@ -8,12 +8,15 @@
         android:title="Profile"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/menu_add"
+        android:title="add" />
+    <item
         android:id="@+id/menu_search"
         android:title="Search" />
     <item
         android:id="@+id/menu_about"
         android:title="About" />
     <item
-        android:id="@+id/menu_tennisshop"
+        android:id="@+id/menu_tennisShop"
         android:title="Tennis Shop" />
 </menu>

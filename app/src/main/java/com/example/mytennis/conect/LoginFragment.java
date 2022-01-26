@@ -1,4 +1,4 @@
-package com.example.mytennis.ui;
+package com.example.mytennis.conect;
 
 import android.os.Bundle;
 
@@ -71,7 +71,7 @@ public class LoginFragment extends Fragment {
         Model.instance.loginUser(email, password, () -> {
             Navigation.findNavController(view)
                     .navigate(LoginFragmentDirections
-                            .actionLoginFragmentToFeedRvFragment());
+                            .actionLoginFragmentToFeedRvFragment(email));
         });
 
     }

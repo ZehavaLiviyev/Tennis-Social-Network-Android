@@ -5,13 +5,19 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.example.mytennis.R;
 import com.example.mytennis.model.Model;
 import com.example.mytennis.model.Post;
@@ -21,12 +27,16 @@ import java.util.List;
 
 public class FeedRvFragment extends Fragment {
     List<Post> data;
+    View view;
+    String user_email;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_feed, container, false);
+        view = inflater.inflate(R.layout.fragment_feed, container, false);
+
         data = Model.instance.getAll();
+
 
         RecyclerView list = view.findViewById(R.id.feed_rv);
         list.setHasFixedSize(true);
@@ -36,13 +46,13 @@ public class FeedRvFragment extends Fragment {
         MyAdapter adapter = new MyAdapter();
         list.setAdapter(adapter);
 
+        user_email = FeedRvFragmentArgs.fromBundle(getArguments()).getUserEmail();
+
+
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                //String stId = data.get(position).getId();
-                //Navigation.findNavController(v).navigate(StudentListRvFragmentDirections.actionStudentListRvFragmentToStudentDetailsFragment(stId));
                 Log.d("TAG", "row was clicked " + position);
-
             }
         });
 
@@ -96,6 +106,44 @@ public class FeedRvFragment extends Fragment {
         public int getItemCount() {
             return data.size();
         }
+    }
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.feed_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(!super.onOptionsItemSelected(item)){
+            switch (item.getItemId()){
+                case R.id.menu_about:
+                    Navigation.findNavController(this.view).navigate(R.id.action_global_aboutFragment);
+                    break;
+                case R.id.menu_profile:
+                   Navigation.findNavController(this.view).navigate(R.id.action_global_profileFragment);
+                    break;
+                case R.id.menu_search:
+                    break;
+                case R.id.menu_tennisShop:
+                    break;
+                case R.id.menu_add:
+                    Navigation.findNavController(this.view).navigate(R.id.action_global_addPostFragment);
+
+                    break;
+            }
+        }else {
+            return true;
+        }
+        return false;
     }
 
 }

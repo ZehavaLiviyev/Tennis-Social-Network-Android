@@ -1,8 +1,15 @@
 package com.example.mytennis.model;
+
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+
 import com.example.mytennis.MyApplication;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
@@ -46,6 +53,12 @@ public class ModelFirebase {
                                 .document(user.getUserName())
                                 .set(json)
                                 .addOnSuccessListener(unused -> listener.onAddUser())
+                                .addOnFailureListener(e -> listener.onAddUser());//add to users collection
+
+                        db.collection("Emails")
+                                .document(user.getEmail())
+                                .set(json)
+                                .addOnSuccessListener(unused -> listener.onAddUser())
                                 .addOnFailureListener(e -> listener.onAddUser());
 
 
@@ -66,7 +79,40 @@ public class ModelFirebase {
         });
     }
 
-    public void logout() {
+    public void logout(Model.LogoutListener listener) {
         mAuth.signOut();
+        listener.onComplete();
     }
+
+    public void getUserByuserEmail(String email, Model.GetUserByuserName listener) {
+
+        db.collection("Emails")
+                .document(email)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        User user = null;
+                        if (task.isSuccessful() & task.getResult() != null) {
+                            user = User.create(task.getResult().getData());
+                        }
+                        db.collection(User.COLLECTION_NAME)
+                                .document(user.userName)
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        User user = null;
+                                        if (task.isSuccessful() & task.getResult() != null) {
+                                            user = User.create(task.getResult().getData());
+                                        }
+                                        listener.onComplete(user);
+                                    }
+                                });
+                    }
+                });
+
+    }
+
+
 }

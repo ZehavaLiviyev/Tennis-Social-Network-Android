@@ -4,8 +4,11 @@ public class Post {
 
     String description;
 
-    public Post(){}
-    public Post(String description){
+
+    public Post() {
+    }
+
+    public Post(String description) {
         this.description = description;
     }
 
