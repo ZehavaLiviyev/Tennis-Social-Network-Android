@@ -46,11 +46,12 @@
         android:id="@+id/frag_addP_cam_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
         android:src="@android:drawable/ic_menu_camera"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frag_addP_post_btn"
-        app:layout_constraintVertical_bias="0.097"
-        tools:layout_editor_absoluteX="320dp" />
+        app:layout_constraintVertical_bias="0.097" />
 
     <ImageButton
         android:id="@+id/frag_addP_gallery_btn"

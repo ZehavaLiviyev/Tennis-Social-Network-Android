@@ -7,7 +7,7 @@ import java.util.Map;
 public class User {
 
     public static final String COLLECTION_NAME = "Users";
-    public static final String COLLECTION_EMAIL_NAME = "Email";
+    public static final String COLLECTION_EMAIL_NAME = "Emails";
     String fullName = "";
     String userName = "";
     String email = "";

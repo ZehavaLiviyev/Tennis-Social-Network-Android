@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.provider.MediaStore;
 import android.util.Log;
@@ -22,7 +23,6 @@ import android.widget.TextView;
 import com.example.mytennis.R;
 import com.example.mytennis.model.Model;
 import com.example.mytennis.model.Post;
-import com.example.mytennis.model.User;
 
 
 public class AddPostFragment extends Fragment {
@@ -56,32 +56,34 @@ public class AddPostFragment extends Fragment {
             openGallery();
         });
         postBtn.setOnClickListener(v -> {
-            save();
+            savePost();
         });
 
 
         return view;
     }
 
-    private void save() {
+    private void savePost() {
         postBtn.setEnabled(false);
         camBtn.setEnabled(false);
         galleryBtn.setEnabled(false);
 
         String desc = descTv.getText().toString();
-        Post post = new Post(desc,Model.instance.getPostId());
-        Model.instance.setPostId(Model.instance.getPostId()+1);
-        //TODO: upload the post to firebase - to new collection 'Posts'
-        if(imageBitmap != null){
-            Model.instance.saveImage(imageBitmap, post.getId() + ".jpg", url -> {
-                post.setImageUrl(url);
-                Model.instance.addPost(post, () ->
-                        Log.d("tag","complete the post"));
-            });
-        }else {
-           // Model.instance
-        }
+        Model.instance.getPostId(id -> {
+            Post post = new Post(desc, id,Model.instance.getActiveUser().getUserName());
+            if (imageBitmap != null) {
+                Model.instance.savePostImage(imageBitmap, post.getId() + ".jpg", url -> {
+                    post.setImageUrl(url);
+                    Model.instance.addPost(post, () ->
+                            Navigation.findNavController(view).navigateUp());
+                });
+            } else {
+                Model.instance.addPost(post, () -> {
+                    Navigation.findNavController(view).navigateUp();
+                });
+            }
 
+        });
 
 
     }

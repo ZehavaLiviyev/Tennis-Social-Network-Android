@@ -1,13 +1,16 @@
 package com.example.mytennis.feed;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,29 +29,48 @@ import java.util.List;
 
 
 public class FeedRvFragment extends Fragment {
-    List<Post> data;
+
     View view;
     String user_email;
+    SwipeRefreshLayout swipeRefresh;
+    FeedViewModel viewModel;
+    MyAdapter adapter;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        viewModel = new ViewModelProvider(this).get(FeedViewModel.class);
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_feed, container, false);
 
-        data = Model.instance.getAll();
+        //Model.instance.getAllPosts(list -> data = list);
+        swipeRefresh = view.findViewById(R.id.postslist_swiperefresh);
+        swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshStudentList());
 
+        viewModel.getData().observe(getViewLifecycleOwner(), list1 -> refresh());
+
+        swipeRefresh.setRefreshing(
+                Model.instance.getPoststListLoadingState().getValue() == Model.PostsListLoadingState.loading
+        );
+
+        Model.instance.getPoststListLoadingState().observe(getViewLifecycleOwner(), postsListLoadingState -> {
+            if (postsListLoadingState == Model.PostsListLoadingState.loading) {
+                swipeRefresh.setRefreshing(true);
+            } else {
+                swipeRefresh.setRefreshing(false);
+            }
+        });
 
         RecyclerView list = view.findViewById(R.id.feed_rv);
         list.setHasFixedSize(true);
-
         list.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        MyAdapter adapter = new MyAdapter();
+        adapter = new MyAdapter();
         list.setAdapter(adapter);
-
         user_email = FeedRvFragmentArgs.fromBundle(getArguments()).getUserEmail();
-
-
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
@@ -56,8 +78,11 @@ public class FeedRvFragment extends Fragment {
             }
         });
 
-
         return view;
+    }
+
+    private void refresh() {
+        adapter.notifyDataSetChanged();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
@@ -98,13 +123,16 @@ public class FeedRvFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-            Post post = data.get(position);
+            Post post = viewModel.getData().getValue().get(position);
             holder.desc_tv.setText(post.getDescription());
         }
 
         @Override
         public int getItemCount() {
-            return data.size();
+            if (viewModel.getData().getValue() == null) {
+                return 0;
+            }
+            return  viewModel.getData().getValue().size();
         }
     }
 
@@ -123,8 +151,8 @@ public class FeedRvFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(!super.onOptionsItemSelected(item)){
-            switch (item.getItemId()){
+        if (!super.onOptionsItemSelected(item)) {
+            switch (item.getItemId()) {
                 case R.id.menu_about:
                     Navigation.findNavController(this.view).navigate(R.id.action_global_aboutFragment);
                     break;
@@ -140,7 +168,7 @@ public class FeedRvFragment extends Fragment {
 
                     break;
             }
-        }else {
+        } else {
             return true;
         }
         return false;
