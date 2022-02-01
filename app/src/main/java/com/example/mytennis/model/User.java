@@ -14,6 +14,14 @@ public class User {
     ImageView profilePicture;
 
 
+    public ImageView getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(ImageView profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
     public User() {
     }
 

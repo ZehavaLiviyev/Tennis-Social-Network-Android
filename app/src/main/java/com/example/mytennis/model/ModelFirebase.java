@@ -10,6 +10,7 @@ import com.example.mytennis.MyApplication;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -187,9 +188,10 @@ public class ModelFirebase {
         void onComplete(List<Post> list);
     }
 
-    public void getAllPosts(GetAllPostsListener listener) {
+    public void getAllPosts(Long lastUpdateData, GetAllPostsListener listener) {
 
         db.collection(Post.COLLECTION_NAME)
+                .whereGreaterThanOrEqualTo("updateData",new Timestamp(lastUpdateData,0))
                 .get()
                 .addOnCompleteListener(task -> {
                     List<Post> list = new LinkedList<Post>();

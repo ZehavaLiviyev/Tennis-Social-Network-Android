@@ -1,20 +1,49 @@
 package com.example.mytennis.model;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.FieldValue;
+
+
 import java.util.HashMap;
 import java.util.Map;
 
+@Entity
 public class Post {
 
     final public static String COLLECTION_NAME = "Posts";
 
+    @PrimaryKey
+    @NonNull
+    String id;
     String postUser;
     String imageUrl;
     String description;
-    String id;
 
+    public String getPostUser() {
+        return postUser;
+    }
+
+    public void setPostUser(String postUser) {
+        this.postUser = postUser;
+    }
+
+    Long updateData = new Long(0);
 
     public Post() {
     }
+    public Long getUpdateData() {
+        return updateData;
+    }
+
+    public void setUpdateData(Long updateData) {
+        this.updateData = updateData;
+    }
+
+
 
     public Post(String description, String id, String postUser) {
         this.description = description;
@@ -28,8 +57,12 @@ public class Post {
         String imageUrl = (String) json.get("imageUrl");
         String postUser = (String) json.get("postUser");
 
+        Timestamp ts = (Timestamp) json.get("updateData");
+        Long update = ts.getSeconds();
+
         Post post = new Post(description, id, postUser);
         post.setImageUrl(imageUrl);
+        post.setUpdateData(update);
         return post;
     }
 
@@ -59,6 +92,7 @@ public class Post {
 
     public Map<String, Object> toJson() {
         Map<String, Object> json = new HashMap<String, Object>();
+        json.put("updateData", FieldValue.serverTimestamp());
         json.put("imageUrl", imageUrl);
         json.put("description", description);
         json.put("id", id);

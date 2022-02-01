@@ -19,11 +19,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.mytennis.R;
 import com.example.mytennis.model.Model;
 import com.example.mytennis.model.Post;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -87,10 +89,15 @@ public class FeedRvFragment extends Fragment {
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         TextView desc_tv;
+        TextView postuser_tv;
+        ImageView post_imv;
 
         public MyViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
             desc_tv = itemView.findViewById(R.id.feedPost_row_des_tv);
+            post_imv = itemView.findViewById(R.id.feedPost_row_imv);
+            postuser_tv = itemView.findViewById(R.id.feedPost_row_userpost_tv);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -98,6 +105,18 @@ public class FeedRvFragment extends Fragment {
                     listener.onItemClick(v, pos);
                 }
             });
+        }
+        void bind(Post post){
+            desc_tv.setText(post.getDescription());
+            post_imv.setImageResource(R.drawable.postimage);
+            postuser_tv.setText(post.getPostUser());
+            if(post.getImageUrl() != null){
+                Picasso.get()
+                        .load(post.getImageUrl())
+                        .into(post_imv);
+
+            }
+
         }
     }
 
@@ -124,7 +143,9 @@ public class FeedRvFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             Post post = viewModel.getData().getValue().get(position);
-            holder.desc_tv.setText(post.getDescription());
+            holder.bind(post);
+           // holder.desc_tv.setText(post.getDescription());
+          //  holder.post_imv.setImageBitmap();
         }
 
         @Override

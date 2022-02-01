@@ -16,7 +16,7 @@
         app:layout_constraintHorizontal_bias="0.226"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/tennis" />
+        app:srcCompat="@drawable/postimage" />
 
     <EditText
         android:id="@+id/frag_addP_desc_tv"

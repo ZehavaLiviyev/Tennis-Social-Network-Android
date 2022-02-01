@@ -7,6 +7,8 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.mytennis.MyApplication;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -45,14 +47,31 @@ public class Model {
 
     public void refreshStudentList() {
         postsListLoadingState.setValue(PostsListLoadingState.loading);
-        modelFirebase.getAllPosts(new ModelFirebase.GetAllPostsListener() {
+
+        Long lastUpdateData = MyApplication.getContext()
+                .getSharedPreferences("TAG",Context.MODE_PRIVATE)
+                .getLong("PostsLastUpdateData",0);
+
+        modelFirebase.getAllPosts(lastUpdateData,new ModelFirebase.GetAllPostsListener() {
             @Override
             public void onComplete(List<Post> list) {
 
                 executor.execute(() -> {
+                    Long lud = new Long(0);
+                    for (Post post:list) {
+                        AppLocalDb.db.postDao().insertAll(post);
+                        if (lud < post.getUpdateData()){
+                            lud = post.getUpdateData();
+                        }
+                    }
+                    MyApplication.getContext()
+                            .getSharedPreferences("TAG",Context.MODE_PRIVATE)
+                            .edit()
+                            .putLong("PostsLastUpdateData",lud)
+                            .commit();
 
-                    postsList.postValue(list);
-// 037367603
+                    List<Post> postList = AppLocalDb.db.postDao().getAll();
+                    postsList.postValue(postList);
                     postsListLoadingState.postValue(PostsListLoadingState.loaded);
 
                 });
