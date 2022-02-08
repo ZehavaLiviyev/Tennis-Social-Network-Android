@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.example.mytennis.R;
 
-public class AboutFragment extends Fragment {
+public class SearchFragment extends Fragment {
 
     View view;
 
@@ -18,7 +18,7 @@ public class AboutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.fragment_about, container, false);
+        view = inflater.inflate(R.layout.fragment_search, container, false);
         return view;
     }
 }

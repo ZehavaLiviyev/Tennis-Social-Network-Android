@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,34 +15,53 @@ import android.widget.EditText;
 
 import com.example.mytennis.R;
 import com.example.mytennis.model.Model;
+import com.example.mytennis.model.User;
+
 
 public class LoginFragment extends Fragment {
+
+    View view;
     EditText emailEt, passwordEt;
-    Button login_btn, newaccount_btn;
+    Button login_btn, newAccount_btn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
-        emailEt = view.findViewById(R.id.frag_login_Email);
-        passwordEt = view.findViewById(R.id.frag_login_Password);
+        //TODO:: need to do intro and move this function there !
+        Model.instance.getCurrentUser(new Model.GetCurrentUserListener() {
+            @Override
+            public void onComplete(User user) {
+                // User is signed in
+                if (user != null) {
+                    Model.instance.setActiveUser(user);
+                    Navigation.findNavController(view).navigate(LoginFragmentDirections.actionLoginFragmentToFeedRvFragment(user.getEmail()));
+                }
+            }
+        });
 
+        view = inflater.inflate(R.layout.fragment_login, container, false);
+
+        emailEt = view.findViewById(R.id.frag_login_Email);
         login_btn = view.findViewById(R.id.frag_login_btn);
-        newaccount_btn = view.findViewById(R.id.frag_login_newaccount_btn);
+        passwordEt = view.findViewById(R.id.frag_login_Password);
+        newAccount_btn = view.findViewById(R.id.frag_login_newaccount_btn);
 
         login_btn.setOnClickListener(v -> {
-            loginUser(view);
+            loginUser();
         });
-        newaccount_btn.setOnClickListener(v -> {
-            Navigation.findNavController(view).navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment());
+        newAccount_btn.setOnClickListener(v -> {
+            Navigation.findNavController(view)
+                    .navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment());
         });
+
+
 
 
         return view;
     }
 
-    private void loginUser(View view) {
+    private void loginUser() {
 
         String email = emailEt.getText().toString();
         String password = passwordEt.getText().toString();
@@ -69,6 +89,7 @@ public class LoginFragment extends Fragment {
             return;
         }
         Model.instance.loginUser(email, password, () -> {
+            Model.instance.refreshUserPostsList();
             Navigation.findNavController(view)
                     .navigate(LoginFragmentDirections
                             .actionLoginFragmentToFeedRvFragment(email));

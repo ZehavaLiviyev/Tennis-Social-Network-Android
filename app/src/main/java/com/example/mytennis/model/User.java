@@ -1,26 +1,19 @@
 package com.example.mytennis.model;
 
-import android.widget.ImageView;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.HashMap;
+
 
 public class User {
 
-    public static final String COLLECTION_NAME = "Users";
-    public static final String COLLECTION_EMAIL_NAME = "Emails";
+    String email = "";
     String fullName = "";
     String userName = "";
-    String email = "";
-    ImageView profilePicture;
+    String proImageUrl = "";
 
+    public static final String COLLECTION_NAME = "Users";
+    public static final String COLLECTION_EMAIL_NAME = "Emails";
 
-    public ImageView getProfilePicture() {
-        return profilePicture;
-    }
-
-    public void setProfilePicture(ImageView profilePicture) {
-        this.profilePicture = profilePicture;
-    }
 
     public User() {
     }
@@ -31,46 +24,56 @@ public class User {
         this.email = email;
     }
 
+    public Map<String, Object> toJson() {
+        Map<String, Object> json = new HashMap<String, Object>();
+        json.put("fullName", fullName);
+        json.put("userName", userName);
+        json.put("email", email);
+        json.put("imageUrl", proImageUrl);
+        return json;
+    }
+
     public static User create(Map<String, Object> json) {
         String fullName = (String) json.get("fullName");
         String userName = (String) json.get("userName");
         String email = (String) json.get("email");
+        String imageUrl = (String) json.get("imageUrl");
         User user = new User(fullName, userName, email);
+        user.setProImageUrl(imageUrl);
         return user;
     }
 
+    public String getEmail() {
+        return email;
+    }
 
     public String getFullName() {
         return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
     }
 
     public String getUserName() {
         return userName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-
-    public String getEmail() {
-        return email;
+    public String getProImageUrl() {
+        return proImageUrl;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
-
-    public Map<String, Object> toJson() {
-        Map<String, Object> json = new HashMap<String, Object>();
-        json.put("fullName", fullName);
-        json.put("userName", userName);
-        json.put("email", email);
-        return json;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setProImageUrl(String proImageUrl) {
+        this.proImageUrl = proImageUrl;
+    }
+
+
 }

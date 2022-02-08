@@ -9,76 +9,63 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.mytennis.MyApplication;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class Model {
 
-    public enum PostsListLoadingState {
-        loading,
-        loaded
-    }
-
     User activeUser = null;
     public static final Model instance = new Model();
     ModelFirebase modelFirebase = new ModelFirebase();
-    public Executor executor = Executors.newFixedThreadPool(1);
     MutableLiveData<List<Post>> postsList = new MutableLiveData<List<Post>>();
+    MutableLiveData<List<User>> usersList = new MutableLiveData<List<User>>();
+    public Executor executor = Executors.newFixedThreadPool(1);
+    MutableLiveData<List<Post>> postsListForUser = new MutableLiveData<List<Post>>();
+
     MutableLiveData<PostsListLoadingState> postsListLoadingState = new MutableLiveData<PostsListLoadingState>();
 
-
-    public LiveData<PostsListLoadingState> getPoststListLoadingState() {
-        return postsListLoadingState;
-    }
 
     private Model() {
         postsListLoadingState.setValue(PostsListLoadingState.loaded);
     }
 
 
-    public LiveData<List<Post>> getAllPosts() {
-        if (postsList.getValue() == null) {
-            refreshStudentList();
-        }
-        return postsList;
+
+
+    /* ************************************ enum loading posts ************************************** */
+
+    public enum PostsListLoadingState {
+        loading,
+        loaded
     }
 
-    public void refreshStudentList() {
-        postsListLoadingState.setValue(PostsListLoadingState.loading);
+    /* ************************************ init user login+register ******************************** */
 
-        Long lastUpdateData = MyApplication.getContext()
-                .getSharedPreferences("TAG",Context.MODE_PRIVATE)
-                .getLong("PostsLastUpdateData",0);
+    public void checkUserName(String userName, CheckUserNameListener listener) {
+        modelFirebase.checkUserName(userName, listener);
+    }
 
-        modelFirebase.getAllPosts(lastUpdateData,new ModelFirebase.GetAllPostsListener() {
-            @Override
-            public void onComplete(List<Post> list) {
+    public void registerUser(String email, String password, String fullName, String username, RegisterListener listener) {
+        modelFirebase.registerUser(email, password, fullName, username, listener);
+    }
 
-                executor.execute(() -> {
-                    Long lud = new Long(0);
-                    for (Post post:list) {
-                        AppLocalDb.db.postDao().insertAll(post);
-                        if (lud < post.getUpdateData()){
-                            lud = post.getUpdateData();
-                        }
-                    }
-                    MyApplication.getContext()
-                            .getSharedPreferences("TAG",Context.MODE_PRIVATE)
-                            .edit()
-                            .putLong("PostsLastUpdateData",lud)
-                            .commit();
+    public void loginUser(String email, String password, LoginListener listener) {
+        modelFirebase.loginUser(email, password, listener);
+        modelFirebase.getUserByUserEmail(email, user -> activeUser = user);
+    }
 
-                    List<Post> postList = AppLocalDb.db.postDao().getAll();
-                    postsList.postValue(postList);
-                    postsListLoadingState.postValue(PostsListLoadingState.loaded);
-
-                });
-            }
-        });
+    public void logout(LogoutListener listener) {
+        modelFirebase.logout(listener);
+    }
 
 
+    /* ************************************ users *************************************************** */
+
+    public void getCurrentUser(GetCurrentUserListener listener) {
+        modelFirebase.getCurrentUser(listener);
     }
 
 
@@ -86,6 +73,127 @@ public class Model {
         return activeUser;
     }
 
+    public void setActiveUser(User activeUser) {
+        this.activeUser = activeUser;
+    }
+
+    public void saveUserImage(Bitmap imageBitmap, String imageName, SaveImageUserListener listener) {
+        modelFirebase.saveUserImage(imageBitmap, imageName, listener);
+    }
+
+    public void saveUpdateUser(String user_name, SaveUserChangeListener listener) {
+        modelFirebase.saveUpdateUser(user_name, listener);
+    }
+
+    public LiveData<List<User>> getAllUsers() {
+        modelFirebase.getAllUsers(list -> usersList.postValue(list));
+        return usersList;
+    }
+
+    public LiveData<List<Post>> getAllPostsForUser() {
+        if (postsListForUser.getValue() == null) {
+            refreshUserPostsList();
+        }
+        return postsListForUser;
+    }
+
+
+    public void refreshUserPostsList() {
+
+        postsListLoadingState.setValue(PostsListLoadingState.loading);
+
+        Long lastUpdateData = MyApplication.getContext()
+                .getSharedPreferences("TAG", Context.MODE_PRIVATE)
+                .getLong("PostsLastUpdateData", 0);
+
+        modelFirebase.getAllPosts(lastUpdateData, list ->
+                executor.execute(() -> {
+
+                    Long lud = new Long(0);
+                    for (Post post : list) {
+                        AppLocalDb.db.postDao().insertAll(post);
+                        if (lud < post.getUpdateData()) {
+                            lud = post.getUpdateData();
+                        }
+                    }
+                    MyApplication.getContext()
+                            .getSharedPreferences("TAG", Context.MODE_PRIVATE)
+                            .edit()
+                            .putLong("PostsLastUpdateData", lud)
+                            .commit();
+
+                    List<Post> postList = AppLocalDb.db.postDao().getAll();
+                    List<Post> userPostList = new ArrayList<Post>();
+
+                    for (Post post : postList) {
+                        if (post.getPostUser().equals(activeUser.getEmail())) {
+                            Log.d("TAG", "email active user is " + post.getPostUser());
+                            userPostList.add(post);
+                        }
+                    }
+
+                    // sort the posts lists in descending order
+                    Collections.sort(userPostList, Collections.reverseOrder());
+                    postsListForUser.postValue(userPostList);
+                    postsListLoadingState.postValue(PostsListLoadingState.loaded);
+
+                }));
+    }
+
+
+    /* ************************************ posts *************************************************** */
+
+    public void deletePost(Post post, DeletePostListener listener) {
+        modelFirebase.deletePost(post, listener, () ->
+                executor.execute(() -> {
+                    // delete the post from app local db
+                    AppLocalDb.db.postDao().delete(post);
+                }));
+    }
+
+    public LiveData<PostsListLoadingState> getPostsListLoadingState() {
+        return postsListLoadingState;
+    }
+
+    public LiveData<List<Post>> getAllPosts() {
+        if (postsList.getValue() == null) {
+            refreshPostsList();
+        }
+        return postsList;
+    }
+
+    public void refreshPostsList() {
+        postsListLoadingState.setValue(PostsListLoadingState.loading);
+
+        Long lastUpdateData = MyApplication.getContext()
+                .getSharedPreferences("TAG", Context.MODE_PRIVATE)
+                .getLong("PostsLastUpdateData", 0);
+
+        modelFirebase.getAllPosts(lastUpdateData, list ->
+                executor.execute(() -> {
+
+                    Long lud = new Long(0);
+                    for (Post post : list) {
+                        AppLocalDb.db.postDao().insertAll(post);
+                        if (lud < post.getUpdateData()) {
+                            lud = post.getUpdateData();
+                        }
+                    }
+                    MyApplication.getContext()
+                            .getSharedPreferences("TAG", Context.MODE_PRIVATE)
+                            .edit()
+                            .putLong("PostsLastUpdateData", lud)
+                            .commit();
+
+                    List<Post> postList = AppLocalDb.db.postDao().getAll();
+
+                    // sort the posts lists in descending order
+                    Collections.sort(postList, Collections.reverseOrder());
+                    postsList.postValue(postList);
+                    postsListLoadingState.postValue(PostsListLoadingState.loaded);
+
+                }));
+    }
 
     public void savePostImage(Bitmap imageBitmap, String imageName, SaveImagePostListener listener) {
         modelFirebase.savePostImage(imageBitmap, imageName, listener);
@@ -99,21 +207,30 @@ public class Model {
         modelFirebase.changePostId(listener);
     }
 
-    public void registerUser(String email, String password, String fullName, String username, RegisterListener listener) {
-        modelFirebase.registerUser(email, password, fullName, username, listener);
+
+    public Post getPostById(String pId, GetPostByIdListener listener) {
+        modelFirebase.getPostById(pId, listener);
+        return null;
     }
 
-    public void loginUser(String email, String password, LoginListener listener) {
-        modelFirebase.loginUser(email, password, listener);
-        modelFirebase.getUserByuserEmail(email, user -> activeUser = user);
+
+    /* ************************************ interface *********************************************** */
+
+    public interface GetCurrentUserListener {
+        void onComplete(User user);
     }
 
-    public void logout(LogoutListener listener) {
-        modelFirebase.logout(listener);
+    public interface DeletePostListener {
+        void onComplete();
     }
 
-// ************************** interface *********************************************************
+    public interface GetPostByIdListener {
+        void onComplete(Post post);
+    }
 
+    public interface SaveUserChangeListener {
+        void onComplete();
+    }
 
     public interface AddPostListener {
         void onComplete();
@@ -121,6 +238,14 @@ public class Model {
 
     public interface SaveImagePostListener {
         void onComplete(String url);
+    }
+
+    public interface SaveImageUserListener {
+        void onComplete(String url);
+    }
+
+    public interface CheckUserNameListener {
+        void onComplete(boolean flag);
     }
 
     public interface RegisterListener {
@@ -142,7 +267,7 @@ public class Model {
     }
 
     public interface GetPostIdListener {
-        void onComplete(String id);
+        void onComplete(Long id);
 
     }
 

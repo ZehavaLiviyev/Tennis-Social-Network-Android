@@ -20,16 +20,17 @@ import com.example.mytennis.model.Model;
 
 public class RegisterFragment extends Fragment {
 
-    EditText fullnameEt, usernameEt, emailEt, passwordEt;
-    Button register_btn, account_btn;
     ProgressBar progressBar;
+    Button register_btn, account_btn;
+    EditText fullNameEt, usernameEt, emailEt, passwordEt;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register, container, false);
 
-        fullnameEt = view.findViewById(R.id.frag_reg_fullname);
+        fullNameEt = view.findViewById(R.id.frag_reg_fullname);
         usernameEt = view.findViewById(R.id.frag_reg_username);
         emailEt = view.findViewById(R.id.frag_reg_email);
         passwordEt = view.findViewById(R.id.frag_reg_password);
@@ -52,14 +53,14 @@ public class RegisterFragment extends Fragment {
     }
 
     private void registerUser(View view) {
-        String fullname = fullnameEt.getText().toString();
+        String fullName = fullNameEt.getText().toString();
         String username = usernameEt.getText().toString();
         String email = emailEt.getText().toString();
         String password = passwordEt.getText().toString();
 
-        if (fullname.isEmpty()) {
-            fullnameEt.setError("Full name is required");
-            fullnameEt.requestFocus();
+        if (fullName.isEmpty()) {
+            fullNameEt.setError("Full name is required");
+            fullNameEt.requestFocus();
             return;
         }
         if (email.isEmpty()) {
@@ -89,17 +90,29 @@ public class RegisterFragment extends Fragment {
             return;
         }
 
-        Model.instance.registerUser(email, password, fullname, username, new Model.RegisterListener() {
-            @Override
-            public void onComplete() {
-                Navigation.findNavController(view).navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment());
-            }
+        Model.instance.checkUserName(usernameEt.getText().toString() , flag -> {
+            // it`s ok , userName is available
+            if (flag == true) {
+                Model.instance.registerUser(email, password, fullName, username, new Model.RegisterListener() {
+                    @Override
+                    public void onComplete() {
+                        Navigation.findNavController(view)
+                                .navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment());
+                    }
 
-            @Override
-            public void onAddUser() {
-                Log.d("TAG", "onComplete -  register");
+                    @Override
+                    public void onAddUser() {
+                        Log.d("TAG", "onComplete -  register");
+                    }
+                });
+
+            } else {
+                usernameEt.setError("Username is not available");
+                usernameEt.requestFocus();
             }
         });
+
+
     }
 
 

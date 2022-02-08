@@ -25,18 +25,18 @@ import android.widget.TextView;
 import com.example.mytennis.R;
 import com.example.mytennis.model.Model;
 import com.example.mytennis.model.Post;
+import com.example.mytennis.model.User;
 import com.squareup.picasso.Picasso;
-
-import java.util.List;
 
 
 public class FeedRvFragment extends Fragment {
 
     View view;
     String user_email;
-    SwipeRefreshLayout swipeRefresh;
+    FeedAdapter adapter;
     FeedViewModel viewModel;
-    MyAdapter adapter;
+    SwipeRefreshLayout swipeRefresh;
+
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -47,19 +47,22 @@ public class FeedRvFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         view = inflater.inflate(R.layout.fragment_feed, container, false);
 
-        //Model.instance.getAllPosts(list -> data = list);
+
+        user_email = FeedRvFragmentArgs.fromBundle(getArguments()).getUserEmail();
+
+        viewModel.getPostsData().observe(getViewLifecycleOwner(), list1 -> refresh());
+
         swipeRefresh = view.findViewById(R.id.postslist_swiperefresh);
-        swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshStudentList());
-
-        viewModel.getData().observe(getViewLifecycleOwner(), list1 -> refresh());
-
+        swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshPostsList());
         swipeRefresh.setRefreshing(
-                Model.instance.getPoststListLoadingState().getValue() == Model.PostsListLoadingState.loading
+                Model.instance.getPostsListLoadingState()
+                        .getValue() == Model.PostsListLoadingState.loading
         );
 
-        Model.instance.getPoststListLoadingState().observe(getViewLifecycleOwner(), postsListLoadingState -> {
+        Model.instance.getPostsListLoadingState().observe(getViewLifecycleOwner(), postsListLoadingState -> {
             if (postsListLoadingState == Model.PostsListLoadingState.loading) {
                 swipeRefresh.setRefreshing(true);
             } else {
@@ -67,18 +70,16 @@ public class FeedRvFragment extends Fragment {
             }
         });
 
+        // rv :
+
         RecyclerView list = view.findViewById(R.id.feed_rv);
-        list.setHasFixedSize(true);
         list.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new MyAdapter();
+        adapter = new FeedAdapter();
+        list.setHasFixedSize(true);
         list.setAdapter(adapter);
-        user_email = FeedRvFragmentArgs.fromBundle(getArguments()).getUserEmail();
-        adapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-                Log.d("TAG", "row was clicked " + position);
-            }
-        });
+
+        adapter.setOnItemClickListener((v, position) ->
+                Log.d("TAG", "row was clicked " + position));
 
         return view;
     }
@@ -87,44 +88,45 @@ public class FeedRvFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView desc_tv;
-        TextView postuser_tv;
-        ImageView post_imv;
-
-        public MyViewHolder(@NonNull View itemView, OnItemClickListener listener) {
-            super(itemView);
-            desc_tv = itemView.findViewById(R.id.feedPost_row_des_tv);
-            post_imv = itemView.findViewById(R.id.feedPost_row_imv);
-            postuser_tv = itemView.findViewById(R.id.feedPost_row_userpost_tv);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int pos = getAdapterPosition();
-                    listener.onItemClick(v, pos);
-                }
-            });
-        }
-        void bind(Post post){
-            desc_tv.setText(post.getDescription());
-            post_imv.setImageResource(R.drawable.postimage);
-            postuser_tv.setText(post.getPostUser());
-            if(post.getImageUrl() != null){
-                Picasso.get()
-                        .load(post.getImageUrl())
-                        .into(post_imv);
-
-            }
-
-        }
-    }
-
     interface OnItemClickListener {
         void onItemClick(View v, int position);
     }
 
-    class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
+    class FeedViewHolder extends RecyclerView.ViewHolder {
+
+        TextView desc_tv;
+        ImageView post_imv;
+        TextView postUser_tv;
+
+        public FeedViewHolder(@NonNull View itemView, OnItemClickListener listener) {
+            super(itemView);
+
+            post_imv = itemView.findViewById(R.id.feedPost_row_imv);
+            desc_tv = itemView.findViewById(R.id.feedPost_row_des_tv);
+            postUser_tv = itemView.findViewById(R.id.feedPost_row_upost_tv);
+
+            itemView.setOnClickListener(v -> {
+                int pos = getAdapterPosition();
+                listener.onItemClick(v, pos);
+            });
+        }
+
+        void bind(Post post, String user_name) {
+
+            post_imv.setImageResource(R.drawable.postimage);
+            desc_tv.setText(post.getDescription());
+            postUser_tv.setText(user_name);
+
+            if (post.getImageUrl() != null) {
+                Picasso.get()
+                        .load(post.getImageUrl())
+                        .into(post_imv);
+            }
+        }
+    }
+
+
+    class FeedAdapter extends RecyclerView.Adapter<FeedViewHolder> {
 
         OnItemClickListener listener;
 
@@ -134,28 +136,36 @@ public class FeedRvFragment extends Fragment {
 
         @NonNull
         @Override
-        public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public FeedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = getLayoutInflater().inflate(R.layout.feed_post_row, parent, false);
-            MyViewHolder holder = new MyViewHolder(view, listener);
+            FeedViewHolder holder = new FeedViewHolder(view, listener);
             return holder;
         }
 
         @Override
-        public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-            Post post = viewModel.getData().getValue().get(position);
-            holder.bind(post);
-           // holder.desc_tv.setText(post.getDescription());
-          //  holder.post_imv.setImageBitmap();
+        public void onBindViewHolder(@NonNull FeedViewHolder holder, int position) {
+            Post post = viewModel.getPostsData().getValue().get(position);
+            String postUserName = "";
+
+
+            for (User u : viewModel.getAllUsersData().getValue()) {
+                if (u.getEmail().equals(post.getPostUser()))
+                    postUserName = u.getUserName();
+            }
+            holder.bind(post, postUserName);
         }
 
         @Override
         public int getItemCount() {
-            if (viewModel.getData().getValue() == null) {
+            if (viewModel.getPostsData().getValue() == null) {
                 return 0;
             }
-            return  viewModel.getData().getValue().size();
+            return viewModel.getPostsData().getValue().size();
         }
     }
+
+
+    /* **************************************** Menu ************************************************ */
 
 
     @Override
@@ -174,20 +184,28 @@ public class FeedRvFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (!super.onOptionsItemSelected(item)) {
             switch (item.getItemId()) {
+
                 case R.id.menu_about:
                     Navigation.findNavController(this.view).navigate(R.id.action_global_aboutFragment);
                     break;
+
                 case R.id.menu_profile:
+                    Model.instance.refreshUserPostsList();
                     Navigation.findNavController(this.view).navigate(R.id.action_global_profileFragment);
                     break;
-                case R.id.menu_search:
+
+                case R.id.menu_addPost:
+                    Navigation.findNavController(this.view).navigate(R.id.action_global_addPostFragment);
                     break;
+
+                case R.id.menu_search:
+                    Navigation.findNavController(this.view).navigate(R.id.action_global_searchFragment);
+                    break;
+
                 case R.id.menu_tennisShop:
                     break;
-                case R.id.menu_add:
-                    Navigation.findNavController(this.view).navigate(R.id.action_global_addPostFragment);
 
-                    break;
+
             }
         } else {
             return true;
