@@ -57,7 +57,12 @@ public class ModelFirebase {
                         boolean flag = true;
                         if (task.isSuccessful() & task.getResult() != null) {
                             if (task.getResult().getData() != null) {
-                                flag=false;
+                                if(userName.equals(Model.instance.activeUser.getUserName())){
+                                    flag = true;
+                                }else {
+                                    flag=false;
+                                }
+
                             }
                         }
                         listener.onComplete(flag);
@@ -142,6 +147,11 @@ public class ModelFirebase {
 
     }
 
+    public void deleteImage(String proImageUrl) {
+        StorageReference storageRef = storage.getReference();
+        StorageReference imgRef = storageRef.child("user_images/" + proImageUrl);
+
+    }
 
     public void getUserByUserEmail(String email, Model.GetUserByUserName listener) {
 
@@ -337,6 +347,8 @@ public class ModelFirebase {
                 }).addOnSuccessListener(unused -> Log.d("TAG", "DocumentSnapshot successfully deleted!"))
                 .addOnFailureListener(e -> Log.d("TAG", "Error deleting document"));
     }
+
+
 
 
     /* ************************************ interface *********************************************** */

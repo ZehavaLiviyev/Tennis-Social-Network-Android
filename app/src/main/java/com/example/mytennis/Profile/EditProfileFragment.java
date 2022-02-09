@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.mytennis.R;
-import com.example.mytennis.conect.RegisterFragmentDirections;
 import com.example.mytennis.model.Model;
 import com.example.mytennis.model.User;
 import com.squareup.picasso.Picasso;
@@ -34,7 +32,7 @@ import java.io.FileNotFoundException;
 public class EditProfileFragment extends Fragment {
 
 
-    ImageButton camBtn, galleryBtn;
+    ImageButton camBtn, galleryBtn,delBtn;
     ImageView imgProfile;
     TextView username;
     Button saveBtn;
@@ -48,7 +46,7 @@ public class EditProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
-
+        delBtn = view.findViewById(R.id.frag_editProfile_del_btn);
         camBtn = view.findViewById(R.id.frag_editProfile_cam_btn);
         saveBtn = view.findViewById(R.id.frag_editProfile_save_btn);
         username = view.findViewById(R.id.frag_editProfile_username_et);
@@ -57,12 +55,15 @@ public class EditProfileFragment extends Fragment {
 
         setUserDetails();
 
+        delBtn.setOnClickListener(v -> deleteImage());
         saveBtn.setOnClickListener(v -> save());
         camBtn.setOnClickListener(v -> openCam());
         galleryBtn.setOnClickListener(v -> openGallery());
 
         return view;
     }
+
+
 
     /* ************************************ init **************************************************** */
 
@@ -148,5 +149,9 @@ public class EditProfileFragment extends Fragment {
         }
     }
 
+
+    private void deleteImage() {
+        Model.instance.deleteImage(Model.instance.getActiveUser().getProImageUrl());
+    }
 
 }

@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
         android:layout_marginEnd="84dp"
+        android:backgroundTint="@color/green"
         android:src="@android:drawable/ic_menu_camera"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frag_editProfile_profil_imv" />
@@ -22,14 +23,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="84dp"
+        android:backgroundTint="@color/green"
         android:src="@android:drawable/ic_menu_gallery"
         app:layout_constraintBottom_toBottomOf="@+id/frag_editProfile_cam_btn"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/frag_editProfile_profil_imv"
-        android:layout_width="238dp"
-        android:layout_height="247dp"
+        android:layout_width="259dp"
+        android:layout_height="258dp"
         android:layout_marginTop="16dp"
         android:src="@drawable/avatar_logo"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,27 +39,56 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/frag_editProfile_username_et"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frag_editProfile_cam_btn" />
 
-    <Button
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
+        style="@style/Widget.TextInputLayout"
+        android:layout_width="286dp"
+        android:layout_height="63dp"
+        android:layout_margin="4dp"
+        android:hint="user name "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frag_editProfile_profil_imv">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/frag_editProfile_username_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:inputType="text"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/frag_editProfile_save_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+
+        android:layout_width="105dp"
+        android:layout_height="47dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:backgroundTint="@color/green"
         android:text="save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.108"
+        app:layout_constraintHorizontal_bias="0.098"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.743" />
+        app:layout_constraintVertical_bias="0.935" />
+
+    <ImageButton
+        android:id="@+id/frag_editProfile_del_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#E80B0B"
+        android:src="@android:drawable/ic_menu_delete"
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
+        app:layout_constraintEnd_toStartOf="@+id/frag_editProfile_cam_btn"
+        app:layout_constraintHorizontal_bias="0.486"
+        app:layout_constraintStart_toEndOf="@+id/frag_editProfile_gallery_btn"
+        app:layout_constraintTop_toBottomOf="@+id/frag_editProfile_profil_imv"
+        app:layout_constraintVertical_bias="0.328" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

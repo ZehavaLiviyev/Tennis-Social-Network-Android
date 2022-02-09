@@ -68,6 +68,11 @@ public class Model {
         modelFirebase.getCurrentUser(listener);
     }
 
+    public void deleteImage(String proImageUrl) {
+        modelFirebase.deleteImage(proImageUrl);
+    }
+
+
 
     public User getActiveUser() {
         return activeUser;

@@ -97,6 +97,7 @@ public class ProfileFragment extends Fragment {
 
 
     private void setUserDetails() {
+        photoImv.setImageResource(R.drawable.avatar_logo);
         usernameTv.setText(user.getUserName());
         if (user.getProImageUrl() != null) {
             Picasso.get()

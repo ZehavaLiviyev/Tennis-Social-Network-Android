@@ -1,4 +1,4 @@
-package com.example.mytennis.conect;
+package com.example.mytennis.connect;
 
 import android.os.Bundle;
 

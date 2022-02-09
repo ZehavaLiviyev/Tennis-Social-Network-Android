@@ -1,11 +1,10 @@
-package com.example.mytennis.conect;
+package com.example.mytennis.connect;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
