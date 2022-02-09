@@ -135,6 +135,7 @@ public class ModelFirebase {
     /* ************************************ users *************************************************** */
 
     public void getCurrentUser(Model.GetCurrentUserListener listener) {
+
         FirebaseUser user = mAuth.getCurrentUser();
 
         if (user != null) {
