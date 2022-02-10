@@ -151,7 +151,15 @@ public class EditProfileFragment extends Fragment {
 
 
     private void deleteImage() {
-        Model.instance.deleteImage(Model.instance.getActiveUser().getProImageUrl());
+        Model.instance.deleteUserImage(Model.instance.getActiveUser().getEmail(), new Model.DeleteUserImageListener() {
+            @Override
+            public void onComplete(Boolean flag) {
+                if (flag==true){
+                    imgProfile.setImageResource(R.drawable.avatar_logo);
+                    Navigation.findNavController(view).navigateUp();
+                }
+            }
+        });
     }
 
 }

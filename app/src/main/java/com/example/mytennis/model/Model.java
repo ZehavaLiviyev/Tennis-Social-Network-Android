@@ -34,7 +34,6 @@ public class Model {
 
 
 
-
     /* ************************************ enum loading posts ************************************** */
 
     public enum PostsListLoadingState {
@@ -68,8 +67,8 @@ public class Model {
         modelFirebase.getCurrentUser(listener);
     }
 
-    public void deleteImage(String proImageUrl) {
-        modelFirebase.deleteImage(proImageUrl);
+    public void deleteUserImage(String proImageName, DeleteUserImageListener listener) {
+        modelFirebase.deleteUserImage(proImageName , listener);
     }
 
 
@@ -148,6 +147,11 @@ public class Model {
 
     /* ************************************ posts *************************************************** */
 
+    public void deletePostImage(Post post,DeletePostImageListener listener) {
+        modelFirebase.deletePostImage(post, listener, () -> executor.execute(() -> AppLocalDb.db.postDao().delete(post)));
+    }
+
+
     public void deletePost(Post post, DeletePostListener listener) {
         modelFirebase.deletePost(post, listener, () ->
                 executor.execute(() -> {
@@ -220,6 +224,15 @@ public class Model {
 
 
     /* ************************************ interface *********************************************** */
+
+
+    public interface DeletePostImageListener {
+        void onComplete(Boolean flag);
+    }
+
+    public interface DeleteUserImageListener {
+        void onComplete(Boolean flag);
+    }
 
     public interface GetCurrentUserListener {
         void onComplete(User user);

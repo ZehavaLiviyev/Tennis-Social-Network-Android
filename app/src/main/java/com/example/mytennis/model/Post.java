@@ -15,6 +15,7 @@ public class Post implements Comparable<Post> {
 
     final public static String COLLECTION_NAME = "Posts";
 
+
     @PrimaryKey
     @NonNull
     Long id;

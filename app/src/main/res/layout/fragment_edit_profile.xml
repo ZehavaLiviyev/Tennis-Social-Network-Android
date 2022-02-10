@@ -63,7 +63,6 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/frag_editProfile_save_btn"
-
         android:layout_width="105dp"
         android:layout_height="47dp"
         android:layout_alignParentEnd="true"
@@ -88,7 +87,7 @@
         app:layout_constraintHorizontal_bias="0.486"
         app:layout_constraintStart_toEndOf="@+id/frag_editProfile_gallery_btn"
         app:layout_constraintTop_toBottomOf="@+id/frag_editProfile_profil_imv"
-        app:layout_constraintVertical_bias="0.328" />
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

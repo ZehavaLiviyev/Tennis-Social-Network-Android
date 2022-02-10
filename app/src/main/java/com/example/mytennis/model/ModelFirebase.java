@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 
 import com.example.mytennis.MyApplication;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
@@ -148,9 +149,32 @@ public class ModelFirebase {
 
     }
 
-    public void deleteImage(String proImageUrl) {
+    public void deleteUserImage(String proImageName, Model.DeleteUserImageListener listener) {
+
+        // delete from storage , users-imgUrl:null
+
+
         StorageReference storageRef = storage.getReference();
-        StorageReference imgRef = storageRef.child("user_images/" + proImageUrl);
+        StorageReference imgRef = storageRef.child("user_images/" + proImageName +".jpg");
+
+        imgRef.delete().addOnSuccessListener(unused -> {
+
+            Model.instance.getActiveUser().setProImageUrl(null);
+            User u = Model.instance.getActiveUser();
+            Map<String, Object> json = u.toJson();
+
+            db.collection(User.COLLECTION_EMAIL_NAME)
+                    .document(u.getEmail())
+                    .set(json);
+
+            // update the new user details
+            db.collection(User.COLLECTION_NAME)
+                    .document(u.getUserName())
+                    .set(json)
+                    .addOnSuccessListener(unused1 -> listener.onComplete(true))
+                    .addOnFailureListener(e -> listener.onComplete(false));
+
+        }).addOnFailureListener(e -> listener.onComplete(false));
 
     }
 
@@ -349,6 +373,34 @@ public class ModelFirebase {
                 .addOnFailureListener(e -> Log.d("TAG", "Error deleting document"));
     }
 
+    public void deletePostImage(Post postT, Model.DeletePostImageListener listenerA, DelPostImageListener listenerB) {
+
+        StorageReference storageRef = storage.getReference();
+        StorageReference imgRef = storageRef.child("post_images/" + postT.getId() +".jpg");
+
+        // delete from app localdb && from firebase
+
+        imgRef.delete().addOnSuccessListener(unused -> {
+
+            postT.setImageUrl(null);
+            Map<String, Object> json = postT.toJson();
+
+            db.collection(Post.COLLECTION_NAME)
+                    .document(String.valueOf(postT.getId()))
+                    .set(json)
+                    .addOnSuccessListener(unused1 -> {
+                        listenerA.onComplete(true);
+                        listenerB.onComplete();
+                    })
+                    .addOnFailureListener(e -> listenerA.onComplete(false));
+
+
+        }).addOnFailureListener(e -> listenerA.onComplete(false));
+
+
+
+    }
+
 
 
 
@@ -363,6 +415,10 @@ public class ModelFirebase {
     }
 
     public interface DelPostListener {
+        void onComplete();
+    }
+
+    public interface DelPostImageListener {
         void onComplete();
     }
 }

@@ -11,22 +11,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="148dp"
+        android:backgroundTint="@color/green"
         android:src="@android:drawable/ic_menu_gallery"
         app:layout_constraintBottom_toBottomOf="@+id/frag_editP_cam_btn"
-        app:layout_constraintEnd_toStartOf="@+id/frag_editP_cam_btn" />
+        app:layout_constraintEnd_toStartOf="@+id/frag_editP_cam_btn"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageButton
         android:id="@+id/frag_editP_cam_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="84dp"
-        android:layout_marginBottom="19dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="76dp"
+        android:backgroundTint="@color/green"
         android:src="@android:drawable/ic_menu_camera"
-        app:layout_constraintBottom_toTopOf="@+id/editPostFrag_desc_et"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editPostFrag_img"
-        app:layout_constraintVertical_bias="0.252" />
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageView
         android:id="@+id/editPostFrag_img"
@@ -42,32 +43,61 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/editPostFrag_desc_et"
-        android:layout_width="348dp"
-        android:layout_height="102dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="168dp"
-        android:layout_marginEnd="8dp"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.489"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editPostFrag_img" />
 
-    <Button
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
+        style="@style/Widget.TextInputLayout"
+        android:layout_width="356dp"
+        android:layout_height="134dp"
+        android:layout_margin="4dp"
+        android:hint="description"
+        app:layout_constraintBottom_toTopOf="@+id/editPostFrag_save_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frag_editP_gallery_btn">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editPostFrag_desc_et"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="text"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <ImageButton
+        android:id="@+id/frag_editP_del_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="44dp"
+        android:layout_marginBottom="100dp"
+        android:backgroundTint="#E80B0B"
+        android:src="@android:drawable/ic_menu_delete"
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
+        app:layout_constraintEnd_toStartOf="@+id/frag_editP_cam_btn"
+        app:layout_constraintHorizontal_bias="0.937"
+        app:layout_constraintStart_toEndOf="@+id/frag_editP_gallery_btn"
+        app:layout_constraintTop_toBottomOf="@+id/editPostFrag_img"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/editPostFrag_save_btn"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="8dp"
+        android:layout_height="47dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="28dp"
+        android:backgroundTint="@color/green"
         android:text="save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editPostFrag_desc_et" />
+        tools:ignore="TouchTargetSizeCheck" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

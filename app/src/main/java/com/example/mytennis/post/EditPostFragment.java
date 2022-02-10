@@ -20,7 +20,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.mytennis.R;
 import com.example.mytennis.model.Model;
@@ -38,7 +37,7 @@ public class EditPostFragment extends Fragment {
     Bitmap imageBitmap;
     EditText postDesc_et;
     ImageView postImage_iv;
-    ImageButton camBtn, galleryBtn;
+    ImageButton camBtn, galleryBtn , delImage;
 
 
     static final int REQUESTS_IMAGE_CAPTURE = 1;
@@ -51,6 +50,7 @@ public class EditPostFragment extends Fragment {
 
         view = inflater.inflate(R.layout.fragment_edit_post, container, false);
 
+        delImage = view.findViewById(R.id.frag_editP_del_btn);
         camBtn = view.findViewById(R.id.frag_editP_cam_btn);
         postImage_iv = view.findViewById(R.id.editPostFrag_img);
         save_btn = view.findViewById(R.id.editPostFrag_save_btn);
@@ -67,11 +67,24 @@ public class EditPostFragment extends Fragment {
             }
         });
 
+
         camBtn.setOnClickListener(v -> openCam());
         save_btn.setOnClickListener(v -> savePost());
+        delImage.setOnClickListener(v -> deleteImage());
         galleryBtn.setOnClickListener(v -> openGallery());
 
         return view;
+    }
+
+    private void deleteImage() {
+        Model.instance.deletePostImage(post_, new Model.DeletePostImageListener() {
+            @Override
+            public void onComplete(Boolean flag) {
+                if (flag==true){
+                    Navigation.findNavController(view).navigateUp();
+                }
+            }
+        });
     }
 
 
