@@ -97,6 +97,7 @@ public class FeedRvFragment extends Fragment {
         TextView desc_tv;
         ImageView post_imv;
         TextView postUser_tv;
+        ImageView postUser_iv;
 
         public FeedViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
@@ -104,6 +105,7 @@ public class FeedRvFragment extends Fragment {
             post_imv = itemView.findViewById(R.id.feedPost_row_imv);
             desc_tv = itemView.findViewById(R.id.feedPost_row_des_tv);
             postUser_tv = itemView.findViewById(R.id.feedPost_row_upost_tv);
+            postUser_iv = itemView.findViewById(R.id.feedPost_row_upostImage_iv);
 
             itemView.setOnClickListener(v -> {
                 int pos = getAdapterPosition();
@@ -111,9 +113,10 @@ public class FeedRvFragment extends Fragment {
             });
         }
 
-        void bind(Post post, String user_name) {
+        void bind(Post post, String user_name, String user_img_url) {
 
             post_imv.setImageResource(R.drawable.postimage);
+            postUser_iv.setImageResource(R.drawable.avatar_logo);
             desc_tv.setText(post.getDescription());
             postUser_tv.setText(user_name);
 
@@ -122,6 +125,13 @@ public class FeedRvFragment extends Fragment {
                         .load(post.getImageUrl())
                         .into(post_imv);
             }
+
+            if (user_img_url != "" && user_img_url != null) {
+                Picasso.get()
+                        .load(user_img_url)
+                        .into(postUser_iv);
+            }
+
         }
     }
 
@@ -146,13 +156,17 @@ public class FeedRvFragment extends Fragment {
         public void onBindViewHolder(@NonNull FeedViewHolder holder, int position) {
             Post post = viewModel.getPostsData().getValue().get(position);
             String postUserName = "";
+            String postUserImage = "";
 
 
             for (User u : viewModel.getAllUsersData().getValue()) {
-                if (u.getEmail().equals(post.getPostUser()))
+                if (u.getEmail().equals(post.getPostUser())) {
                     postUserName = u.getUserName();
+                    postUserImage = u.getProImageUrl();
+                }
+
             }
-            holder.bind(post, postUserName);
+            holder.bind(post, postUserName, postUserImage);
         }
 
         @Override
