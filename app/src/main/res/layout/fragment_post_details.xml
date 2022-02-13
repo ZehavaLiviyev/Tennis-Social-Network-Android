@@ -7,6 +7,32 @@
     tools:context=".post.PostDetailsFragment">
 
 
+    <ProgressBar
+        android:id="@+id/frag_details_progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="201dp"
+        android:layout_height="218dp"
+        android:elevation="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/details_img"
+        android:layout_width="225dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="52dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App"
+        app:srcCompat="@drawable/postimage"
+        app:strokeColor="@color/white"
+        android:padding="0.0001dp"
+        app:strokeWidth="8dp" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/details_delete_btn"
         android:layout_width="183dp"
@@ -20,34 +46,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/details_img"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="8dp"
-        android:src="@drawable/postimage"
-        app:layout_constraintDimensionRatio="16:9"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
 
     <TextView
         android:id="@+id/details_desc_tv"
         android:layout_width="367dp"
         android:layout_height="144dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="66dp"
+        android:layout_marginTop="92dp"
         android:layout_marginEnd="16dp"
+        android:fontFamily="@font/alike"
         android:text="description"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/details_img" />
-
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/details_edit_btn"
@@ -58,6 +70,7 @@
         android:layout_marginStart="60dp"
         android:layout_marginEnd="60dp"
         android:backgroundTint="@color/green"
+        android:fontFamily="@font/aclonica"
         android:text="Edit"
         app:layout_constraintBottom_toTopOf="@+id/details_delete_btn"
         app:layout_constraintEnd_toEndOf="parent"

@@ -20,7 +20,6 @@ import com.example.mytennis.model.Model;
 
 public class RegisterFragment extends Fragment {
 
-    ProgressBar progressBar;
     Button register_btn, account_btn;
     EditText fullNameEt, usernameEt, emailEt, passwordEt;
 
@@ -36,9 +35,8 @@ public class RegisterFragment extends Fragment {
         passwordEt = view.findViewById(R.id.frag_reg_password);
 
         register_btn = view.findViewById(R.id.frag_reg_register_btn);
-        progressBar = view.findViewById(R.id.frag_reg_progressBar);
         account_btn = view.findViewById(R.id.frag_reg_login_btn);
-        progressBar.setVisibility(View.GONE);
+
 
         account_btn.setOnClickListener(v -> {
             Navigation.findNavController(view).navigateUp();
@@ -53,6 +51,7 @@ public class RegisterFragment extends Fragment {
     }
 
     private void registerUser(View view) {
+
         String fullName = fullNameEt.getText().toString();
         String username = usernameEt.getText().toString();
         String email = emailEt.getText().toString();
@@ -90,7 +89,8 @@ public class RegisterFragment extends Fragment {
             return;
         }
 
-        Model.instance.checkUserName(usernameEt.getText().toString() , flag -> {
+
+        Model.instance.checkUserName(usernameEt.getText().toString(), flag -> {
             // it`s ok , userName is available
             if (flag == true) {
                 Model.instance.registerUser(email, password, fullName, username, new Model.RegisterListener() {

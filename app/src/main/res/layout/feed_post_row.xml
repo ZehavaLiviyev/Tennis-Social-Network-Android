@@ -20,7 +20,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="190dp"
         android:layout_margin="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
@@ -30,19 +30,6 @@
         android:layout_marginBottom="8dp">
 
 
-        <!--  <ImageView
-            app:srcCompat="@drawable/postimage"
-            android:id="@+id/feedPost_row_imv"
-            android:layout_width="102dp"
-            android:layout_height="141dp"
-            android:layout_marginTop="24dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.097"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
--->
-
         <TextView
             android:id="@+id/feedPost_row_upost_tv"
             android:layout_width="wrap_content"
@@ -50,21 +37,23 @@
             android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
+            android:fontFamily="@font/aclonica"
             android:gravity="center_horizontal"
             android:text="TextView"
             android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@+id/feedPost_row_imv"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.041"
+            app:layout_constraintHorizontal_bias="0.027"
             app:layout_constraintStart_toEndOf="@+id/feedPost_row_upostImage_iv"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="0.16" />
 
         <TextView
             android:id="@+id/feedPost_row_des_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:fontFamily="@font/alike"
             android:gravity="center_horizontal"
             android:text="description"
             android:textSize="20sp"
@@ -75,18 +64,20 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/feedPost_row_imv"
-            android:layout_width="96dp"
-            android:layout_height="94dp"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
             android:layout_marginStart="4dp"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="8dp"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0"
-            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize8Percent"
+            android:padding="0.0001dp"
+            app:strokeWidth="8dp"
+            app:strokeColor="@color/white"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App"
             app:srcCompat="@drawable/postimage" />
 
         <ImageView

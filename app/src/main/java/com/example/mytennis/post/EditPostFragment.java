@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.example.mytennis.R;
 import com.example.mytennis.model.Model;
@@ -37,12 +38,12 @@ public class EditPostFragment extends Fragment {
     Bitmap imageBitmap;
     EditText postDesc_et;
     ImageView postImage_iv;
-    ImageButton camBtn, galleryBtn , delImage;
+    ProgressBar progressBar;
+    ImageButton camBtn, galleryBtn, delImage;
 
 
     static final int REQUESTS_IMAGE_CAPTURE = 1;
     static final int REQUEST_IMAGE_GALLERY = 2;
-
 
 
     @Override
@@ -56,7 +57,9 @@ public class EditPostFragment extends Fragment {
         save_btn = view.findViewById(R.id.editPostFrag_save_btn);
         postDesc_et = view.findViewById(R.id.editPostFrag_desc_et);
         galleryBtn = view.findViewById(R.id.frag_editP_gallery_btn);
+        progressBar = view.findViewById(R.id.frag_editPost_progressBar);
 
+        progressBar.setVisibility(View.GONE);
         String pId = EditPostFragmentArgs.fromBundle(getArguments()).getPostId();
 
         Model.instance.getPostById(pId, post -> {
@@ -80,7 +83,7 @@ public class EditPostFragment extends Fragment {
         Model.instance.deletePostImage(post_, new Model.DeletePostImageListener() {
             @Override
             public void onComplete(Boolean flag) {
-                if (flag==true){
+                if (flag == true) {
                     Navigation.findNavController(view).navigateUp();
                 }
             }
@@ -90,9 +93,6 @@ public class EditPostFragment extends Fragment {
 
     private void savePost() {
 
-        camBtn.setEnabled(false);
-        save_btn.setEnabled(false);
-        galleryBtn.setEnabled(false);
 
         post_.setDescription(postDesc_et.getText().toString());
 
@@ -101,12 +101,20 @@ public class EditPostFragment extends Fragment {
                 post_.setImageUrl(url);
                 Model.instance.addPost(post_, () -> {
                     Model.instance.refreshPostsList();
+                    camBtn.setEnabled(false);
+                    save_btn.setEnabled(false);
+                    galleryBtn.setEnabled(false);
+                    progressBar.setVisibility(View.VISIBLE);
                     Navigation.findNavController(view).navigateUp();
                 });
             });
         } else {
             Model.instance.addPost(post_, () -> {
                 Model.instance.refreshPostsList();
+                camBtn.setEnabled(false);
+                save_btn.setEnabled(false);
+                galleryBtn.setEnabled(false);
+                progressBar.setVisibility(View.VISIBLE);
                 Navigation.findNavController(view).navigateUp();
             });
         }

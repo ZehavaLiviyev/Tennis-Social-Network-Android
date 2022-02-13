@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.example.mytennis.R;
 import com.example.mytennis.model.Model;
@@ -20,6 +21,7 @@ import com.example.mytennis.model.User;
 public class LoginFragment extends Fragment {
 
     View view;
+    ProgressBar progressBar;
     EditText emailEt, passwordEt;
     Button login_btn, newAccount_btn;
 
@@ -28,6 +30,11 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         //TODO:: need to do intro and move this function there !
+        // search
+        // לעבור על הבהרות הפרוייקט
+        // change " font family " at all the edit text in project
+        // progressbar :
+
         Model.instance.getCurrentUser(new Model.GetCurrentUserListener() {
             @Override
             public void onComplete(User user) {
@@ -87,6 +94,8 @@ public class LoginFragment extends Fragment {
             passwordEt.requestFocus();
             return;
         }
+
+
         Model.instance.loginUser(email, password, () -> {
             Model.instance.refreshUserPostsList();
             Navigation.findNavController(view)

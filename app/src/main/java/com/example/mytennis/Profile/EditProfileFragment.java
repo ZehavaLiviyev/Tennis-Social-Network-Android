@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.mytennis.R;
@@ -33,6 +34,7 @@ public class EditProfileFragment extends Fragment {
 
 
     ImageButton camBtn, galleryBtn,delBtn;
+    ProgressBar progressBar;
     ImageView imgProfile;
     TextView username;
     Button saveBtn;
@@ -52,6 +54,10 @@ public class EditProfileFragment extends Fragment {
         username = view.findViewById(R.id.frag_editProfile_username_et);
         imgProfile = view.findViewById(R.id.frag_editProfile_profil_imv);
         galleryBtn = view.findViewById(R.id.frag_editProfile_gallery_btn);
+        progressBar = view.findViewById(R.id.frag_editProfile_progressBar);
+
+        progressBar.setVisibility(View.GONE);
+
 
         setUserDetails();
 
@@ -84,9 +90,11 @@ public class EditProfileFragment extends Fragment {
             // it`s ok , userName is available
             if (flag == true) {
 
+
                 camBtn.setEnabled(false);
                 saveBtn.setEnabled(false);
                 galleryBtn.setEnabled(false);
+                progressBar.setVisibility(View.VISIBLE);
 
                 User user = Model.instance.getActiveUser();
 

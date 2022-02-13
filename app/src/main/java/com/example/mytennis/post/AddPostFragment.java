@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.mytennis.R;
@@ -32,6 +33,7 @@ public class AddPostFragment extends Fragment {
 
 
     ImageButton camBtn, galleryBtn;
+    ProgressBar progressBar;
     ImageView imgPost;
     TextView descTv;
     Button postBtn;
@@ -47,11 +49,14 @@ public class AddPostFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_add_post, container, false);
+        progressBar = view.findViewById(R.id.frag_addP_progressBar);
         galleryBtn = view.findViewById(R.id.frag_addP_gallery_btn);
         postBtn = view.findViewById(R.id.frag_addP_post_btn);
         camBtn = view.findViewById(R.id.frag_addP_cam_btn);
         descTv = view.findViewById(R.id.frag_addP_desc_tv);
         imgPost = view.findViewById(R.id.frag_addP_iv_p);
+
+        progressBar.setVisibility(View.GONE);
 
         camBtn.setOnClickListener(v -> {
             openCam();
@@ -108,6 +113,7 @@ public class AddPostFragment extends Fragment {
         camBtn.setEnabled(false);
         postBtn.setEnabled(false);
         galleryBtn.setEnabled(false);
+        progressBar.setVisibility(View.VISIBLE);
 
         String desc = descTv.getText().toString();
 

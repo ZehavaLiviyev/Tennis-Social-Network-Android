@@ -7,6 +7,18 @@
     tools:context=".Profile.EditProfileFragment">
 
 
+    <ProgressBar
+        android:id="@+id/frag_editProfile_progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="273dp"
+        android:layout_height="251dp"
+        android:elevation="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.529" />
+
     <ImageButton
         android:id="@+id/frag_editProfile_cam_btn"
         android:layout_width="wrap_content"
@@ -28,25 +40,30 @@
         app:layout_constraintBottom_toBottomOf="@+id/frag_editProfile_cam_btn"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/frag_editProfile_profil_imv"
-        android:layout_width="259dp"
-        android:layout_height="258dp"
+        android:layout_width="253dp"
+        android:layout_height="251dp"
         android:layout_marginTop="16dp"
         android:src="@drawable/avatar_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="0.0001dp"
+        app:strokeColor="@color/white"
+        app:strokeWidth= "0.000001dp"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App" />
 
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
         style="@style/Widget.TextInputLayout"
-        android:layout_width="286dp"
-        android:layout_height="63dp"
+        android:layout_width="305dp"
+        android:layout_height="73dp"
         android:layout_margin="4dp"
         android:hint="user name "
+        android:scrollbarSize="9dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,9 +73,11 @@
             android:id="@+id/frag_editProfile_username_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/abhaya_libre_medium"
             android:gravity="center_horizontal"
             android:inputType="text"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:textSize="20sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
@@ -80,6 +99,7 @@
         android:id="@+id/frag_editProfile_del_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:backgroundTint="#E80B0B"
         android:src="@android:drawable/ic_menu_delete"
         app:layout_constraintBottom_toTopOf="@+id/textInputLayout"

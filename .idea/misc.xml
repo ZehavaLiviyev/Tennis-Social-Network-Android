@@ -16,18 +16,22 @@
         <entry key="..\:/Users/Itay5/AndroidStudioProjects/MyTennis/app/src/main/res/layout/fragment_profile.xml" value="0.33" />
         <entry key="..\:/Users/Itay5/AndroidStudioProjects/MyTennis/app/src/main/res/layout/fragment_register.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Itay5/AndroidStudioProjects/MyTennis/app/src/main/res/menu/feed_menu.xml" value="0.27708333333333335" />
+        <entry key="..\:/Users/zehav/AndroidStudioProjects/MyTennis/app/src/main/res/drawable/search_layout.xml" value="0.3453125" />
+        <entry key="..\:/Users/zehav/AndroidStudioProjects/MyTennis/app/src/main/res/font/.xml" value="0.359375" />
+        <entry key="..\:/Users/zehav/AndroidStudioProjects/MyTennis/app/src/main/res/font/alike.xml" value="0.39739583333333334" />
         <entry key="..\:/Users/zehav/AndroidStudioProjects/MyTennis/app/src/main/res/layout/activity_main.xml" value="0.16621376811594202" />
-        <entry key="..\:/Users/zehav/AndroidStudioProjects/MyTennis/app/src/main/res/layout/feed_post_row.xml" value="0.6666666666666666" />
+        <entry key="..\:/Users/zehav/AndroidStudioProjects/MyTennis/app/src/main/res/layout/feed_post_row.xml" value="0.4466666666666667" />
         <entry key="..\:/Users/zehav/AndroidStudioProjects/MyTennis/app/src/main/res/layout/fragment_about.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/zehav/AndroidStudioProjects/MyTennis/app/src/main/res/layout/fragment_add_post.xml" value="0.3026041666666667" />
         <entry key="..\:/Users/zehav/AndroidStudioProjects/MyTennis/app/src/main/res/layout/fragment_edit_post.xml" value="0.28125" />
         <entry key="..\:/Users/zehav/AndroidStudioProjects/MyTennis/app/src/main/res/layout/fragment_edit_profile.xml" value="0.3026041666666667" />
         <entry key="..\:/Users/zehav/AndroidStudioProjects/MyTennis/app/src/main/res/layout/fragment_feed.xml" value="0.1" />
         <entry key="..\:/Users/zehav/AndroidStudioProjects/MyTennis/app/src/main/res/layout/fragment_login.xml" value="0.17857142857142858" />
-        <entry key="..\:/Users/zehav/AndroidStudioProjects/MyTennis/app/src/main/res/layout/fragment_post_details.xml" value="0.30416666666666664" />
+        <entry key="..\:/Users/zehav/AndroidStudioProjects/MyTennis/app/src/main/res/layout/fragment_post_details.xml" value="0.4466666666666667" />
         <entry key="..\:/Users/zehav/AndroidStudioProjects/MyTennis/app/src/main/res/layout/fragment_profile.xml" value="0.24895833333333334" />
         <entry key="..\:/Users/zehav/AndroidStudioProjects/MyTennis/app/src/main/res/layout/fragment_register.xml" value="0.29270833333333335" />
-        <entry key="..\:/Users/zehav/AndroidStudioProjects/MyTennis/app/src/main/res/layout/fragment_search.xml" value="0.3671875" />
+        <entry key="..\:/Users/zehav/AndroidStudioProjects/MyTennis/app/src/main/res/layout/fragment_search.xml" value="0.4466666666666667" />
+        <entry key="..\:/Users/zehav/AndroidStudioProjects/MyTennis/app/src/main/res/layout/search_user_row.xml" value="0.42835595776772245" />
       </map>
     </option>
   </component>

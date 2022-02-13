@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.mytennis.R;
@@ -25,7 +26,9 @@ public class PostDetailsFragment extends Fragment {
     Post post_;
     TextView postDesc_et;
     ImageView postImage_iv;
+    ProgressBar progressBar;
     Button edit_btn, delete_btn;
+
 
 
     @Override
@@ -38,7 +41,9 @@ public class PostDetailsFragment extends Fragment {
         edit_btn = view.findViewById(R.id.details_edit_btn);
         postDesc_et = view.findViewById(R.id.details_desc_tv);
         delete_btn = view.findViewById(R.id.details_delete_btn);
+        progressBar = view.findViewById(R.id.frag_details_progressBar);
 
+        progressBar.setVisibility(View.GONE);
         String pId = PostDetailsFragmentArgs.fromBundle(getArguments()).getPostId();
 
         Model.instance.getPostById(pId, post -> {
@@ -63,10 +68,15 @@ public class PostDetailsFragment extends Fragment {
 
     private void deletePost() {
 
-        edit_btn.setEnabled(false);
-        delete_btn.setEnabled(false);
+
 
         // TODO:: NAVIGATE TO SOME PAGE
-        Model.instance.deletePost(post_, () -> Log.d("TAG", "delete successful"));
+        Model.instance.deletePost(post_, () -> {
+            edit_btn.setEnabled(false);
+            delete_btn.setEnabled(false);
+            progressBar.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
+            Log.d("TAG", "delete successful");
+        });
     }
 }
