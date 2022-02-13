@@ -1,4 +1,4 @@
-package com.example.mytennis.Profile;
+package com.example.mytennis.myprofile;
 
 import static android.app.Activity.RESULT_OK;
 

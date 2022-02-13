@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/introFragment">
 
     <fragment
         android:id="@+id/loginFragment"
@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.mytennis.Profile.ProfileFragment"
+        android:name="com.example.mytennis.myprofile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile">
         <action
@@ -70,7 +70,7 @@
     <action android:id="@+id/action_global_addPostFragment" app:destination="@id/addPostFragment" />
     <fragment
         android:id="@+id/editProfileFragment"
-        android:name="com.example.mytennis.Profile.EditProfileFragment"
+        android:name="com.example.mytennis.myprofile.EditProfileFragment"
         android:label="fragment_edit_profile"
         tools:layout="@layout/fragment_edit_profile" />
     <fragment
@@ -96,8 +96,21 @@
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.example.mytennis.pages.SearchFragment"
-        android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        android:name="com.example.mytennis.search.SearchFragment"
+        android:label="SearchFragment" />
     <action android:id="@+id/action_global_searchFragment" app:destination="@id/searchFragment" />
+    <fragment
+        android:id="@+id/introFragment"
+        android:name="com.example.mytennis.IntroFragment"
+        android:label="fragment_intro"
+        tools:layout="@layout/fragment_intro" >
+        <action
+            android:id="@+id/action_introFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/nav_graph" />
+        <action
+            android:id="@+id/action_introFragment_to_feedRvFragment"
+            app:destination="@id/feedRvFragment"
+            app:popUpTo="@id/nav_graph" />
+    </fragment>
 </navigation>

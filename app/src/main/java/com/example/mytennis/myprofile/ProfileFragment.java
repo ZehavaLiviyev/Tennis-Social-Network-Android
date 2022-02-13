@@ -1,4 +1,4 @@
-package com.example.mytennis.Profile;
+package com.example.mytennis.myprofile;
 
 import android.content.Context;
 import android.os.Bundle;

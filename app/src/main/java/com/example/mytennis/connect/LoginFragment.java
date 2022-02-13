@@ -29,22 +29,10 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        //TODO:: need to do intro and move this function there !
+        //TODO::
         // search
         // לעבור על הבהרות הפרוייקט
-        // change " font family " at all the edit text in project
-        // progressbar :
 
-        Model.instance.getCurrentUser(new Model.GetCurrentUserListener() {
-            @Override
-            public void onComplete(User user) {
-                // User is signed in
-                if (user != null) {
-                    Model.instance.setActiveUser(user);
-                    Navigation.findNavController(view).navigate(LoginFragmentDirections.actionLoginFragmentToFeedRvFragment(user.getEmail()));
-                }
-            }
-        });
 
         view = inflater.inflate(R.layout.fragment_login, container, false);
 
