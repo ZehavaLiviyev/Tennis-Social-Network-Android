@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 
-public class User {
+public class User implements Comparable<User>  {
 
     String email = "";
     String fullName = "";
@@ -76,4 +76,8 @@ public class User {
     }
 
 
+    @Override
+    public int compareTo(User o) {
+        return this.getUserName().compareTo(o.getUserName());
+    }
 }

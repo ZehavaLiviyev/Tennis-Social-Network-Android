@@ -16,7 +16,4 @@
     <item
         android:id="@+id/menu_about"
         android:title="About" />
-    <item
-        android:id="@+id/menu_tennisShop"
-        android:title="Tennis Shop" />
 </menu>

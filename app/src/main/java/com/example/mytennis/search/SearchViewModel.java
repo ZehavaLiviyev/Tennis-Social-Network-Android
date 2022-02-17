@@ -8,18 +8,20 @@ import com.example.mytennis.model.Post;
 import com.example.mytennis.model.User;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SearchViewModel extends ViewModel {
 
     LiveData<List<User>> data;
-   // LiveData<List<User>> matchData;
+    // LiveData<List<User>> matchData;
 
     public SearchViewModel() {
         data = Model.instance.getAllUsers();
     }
 
     public LiveData<List<User>> getDataList() {
+        Collections.sort(data.getValue());
         return data;
     }
 

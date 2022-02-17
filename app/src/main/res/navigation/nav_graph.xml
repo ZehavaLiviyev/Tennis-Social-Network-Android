@@ -97,7 +97,11 @@
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.mytennis.search.SearchFragment"
-        android:label="SearchFragment" />
+        android:label="SearchFragment" >
+        <action
+            android:id="@+id/action_searchFragment_to_userFragment"
+            app:destination="@id/userFragment" />
+    </fragment>
     <action android:id="@+id/action_global_searchFragment" app:destination="@id/searchFragment" />
     <fragment
         android:id="@+id/introFragment"
@@ -113,4 +117,9 @@
             app:destination="@id/feedRvFragment"
             app:popUpTo="@id/nav_graph" />
     </fragment>
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="com.example.mytennis.userProfile.UserProfileFragment"
+        android:label="fragment_user"
+        tools:layout="@layout/fragment_user_Profile" />
 </navigation>

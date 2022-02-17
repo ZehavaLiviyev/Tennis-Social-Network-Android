@@ -99,7 +99,7 @@ public class ProfileFragment extends Fragment {
     private void setUserDetails() {
         photoImv.setImageResource(R.drawable.avatar_logo);
         usernameTv.setText(user.getUserName());
-        if (user.getProImageUrl() != null) {
+        if (user.getProImageUrl() != null&&user.getProImageUrl()!="") {
             Picasso.get()
                     .load(Model.instance.getActiveUser().getProImageUrl())
                     .into(photoImv);
@@ -158,7 +158,7 @@ public class ProfileFragment extends Fragment {
                         .load(post.getImageUrl())
                         .into(post_imv);
             }
-            if(userImage!=null){
+            if(userImage!=null&&userImage!=""){
                 Picasso.get()
                         .load(userImage)
                         .into(postUser_iv);

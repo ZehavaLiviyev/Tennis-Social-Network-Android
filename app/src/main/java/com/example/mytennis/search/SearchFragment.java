@@ -27,12 +27,12 @@ import com.squareup.picasso.Picasso;
 public class SearchFragment extends Fragment {
 
     View view;
-    EditText search_view_et;
-    ImageButton search_btn;
+   // EditText search_view_et;
+  //  ImageButton search_btn;
     RecyclerView list;
     SearchViewModel viewModel;
     SearchUserAdapter adapter;
-    TextView tV;
+   // TextView tV;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -45,11 +45,11 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_search, container, false);
-        search_view_et = view.findViewById(R.id.search_textField_et);
-        search_btn = view.findViewById(R.id.search__searchBtn);
+        //search_view_et = view.findViewById(R.id.search_textField_et);
+       // search_btn = view.findViewById(R.id.search__searchBtn);
         list = view.findViewById(R.id.search_rv);
 
-        tV = view.findViewById(R.id.text_test);
+      //  tV = view.findViewById(R.id.text_test);
 
         adapter = new SearchUserAdapter();
         list.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -58,12 +58,11 @@ public class SearchFragment extends Fragment {
 
         viewModel.getDataList().observe(getViewLifecycleOwner(), list1 -> refresh());
 
-       // viewModel.getMatchDataList().observe(getViewLifecycleOwner(), list1 -> refresh());
-
 
         adapter.setOnItemClickListener((v, position) ->
                 Log.d("TAG", "row was clicked " + position));
 
+/*
 
         search_view_et.addTextChangedListener(new TextWatcher() {
             @Override
@@ -74,7 +73,7 @@ public class SearchFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                for(User user: viewModel.getDataList().getValue()) {
+                for (User user : viewModel.getDataList().getValue()) {
                     if (user.getUserName().contains(s.toString())) {
                         viewModel.data.getValue().add(user);
                     }
@@ -88,6 +87,7 @@ public class SearchFragment extends Fragment {
             }
         });
 
+*/
 
         return view;
     }
@@ -148,11 +148,8 @@ public class SearchFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull SearchUserViewHolder holder, int position) {
-           // if (viewModel.getMatchDataList().getValue() != null) {
-                User user = viewModel.getDataList().getValue().get(position);
-                holder.bind(user);
-           // }
-
+            User user = viewModel.getDataList().getValue().get(position);
+            holder.bind(user);
         }
 
         @Override

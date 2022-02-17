@@ -216,10 +216,6 @@ public class FeedRvFragment extends Fragment {
                     Navigation.findNavController(this.view).navigate(R.id.action_global_searchFragment);
                     break;
 
-                case R.id.menu_tennisShop:
-                    break;
-
-
             }
         } else {
             return true;

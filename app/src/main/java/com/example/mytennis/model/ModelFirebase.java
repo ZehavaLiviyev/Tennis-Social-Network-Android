@@ -58,10 +58,10 @@ public class ModelFirebase {
                         boolean flag = true;
                         if (task.isSuccessful() & task.getResult() != null) {
                             if (task.getResult().getData() != null) {
-                                if(userName.equals(Model.instance.activeUser.getUserName())){
+                                if (userName.equals(Model.instance.activeUser.getUserName())) {
                                     flag = true;
-                                }else {
-                                    flag=false;
+                                } else {
+                                    flag = false;
                                 }
 
                             }
@@ -155,7 +155,7 @@ public class ModelFirebase {
 
 
         StorageReference storageRef = storage.getReference();
-        StorageReference imgRef = storageRef.child("user_images/" + proImageName +".jpg");
+        StorageReference imgRef = storageRef.child("user_images/" + proImageName + ".jpg");
 
         imgRef.delete().addOnSuccessListener(unused -> {
 
@@ -352,7 +352,36 @@ public class ModelFirebase {
     }
 
 
-    public void deletePost(Post post, Model.DeletePostListener listener, DelPostListener secondListener) {
+    public void create_postDelete(Post post) {
+        Map<String, Object> json = new HashMap<String, Object>();
+        json.put("id", post.id);
+        db.collection(Post.COLLECTION_DELETE_NAME)
+                .document("id")
+                .set(json)
+                .addOnSuccessListener(unused -> Log.d("TAG", "success create delete post ducument"))
+                .addOnFailureListener(e -> Log.d("TAG", "unsuccessful create delete post document"));
+    }
+
+    public void get_postDelete(DelPostListener listener) {
+
+        db.collection(Post.COLLECTION_DELETE_NAME)
+                .document("id")
+                .get()
+                .addOnCompleteListener(task -> {
+                    Long id_ = new Long(0);
+                    if (task.isSuccessful() & task.getResult() != null) {
+                        Map<String, Object> json = task.getResult().getData();
+                        id_ = (Long) json.get("id");
+                    }
+
+                    listener.onComplete(id_);
+                });
+    }
+
+
+    public void deletePost(Post post, Model.DeletePostListener listener) {
+
+        //create_postDelete(post);
         // delete the post from firebase
         db.collection(Post.COLLECTION_NAME)
                 .document(String.valueOf(post.getId()))
@@ -363,12 +392,14 @@ public class ModelFirebase {
                     StorageReference imgRef = storageRef.child("post_images/" + post.getId() + ".jpg");
                     imgRef.delete()
                             .addOnSuccessListener(aVoid -> {
-                                listener.onComplete();
-                                secondListener.onComplete();
+                                Log.d("TAG", "image delete is successful");
                             })
                             .addOnFailureListener(exception -> {
-                                Log.d("TAG", "image gelete is fail");
+                                Log.d("TAG", "image delete is fail");
                             });
+
+                    //  secondListener.onComplete();
+                    listener.onComplete();
                 }).addOnSuccessListener(unused -> Log.d("TAG", "DocumentSnapshot successfully deleted!"))
                 .addOnFailureListener(e -> Log.d("TAG", "Error deleting document"));
     }
@@ -376,7 +407,7 @@ public class ModelFirebase {
     public void deletePostImage(Post postT, Model.DeletePostImageListener listenerA, DelPostImageListener listenerB) {
 
         StorageReference storageRef = storage.getReference();
-        StorageReference imgRef = storageRef.child("post_images/" + postT.getId() +".jpg");
+        StorageReference imgRef = storageRef.child("post_images/" + postT.getId() + ".jpg");
 
         // delete from app localdb && from firebase
 
@@ -398,7 +429,6 @@ public class ModelFirebase {
         }).addOnFailureListener(e -> listenerA.onComplete(false));
 
 
-
     }
 
 
@@ -415,7 +445,7 @@ public class ModelFirebase {
     }
 
     public interface DelPostListener {
-        void onComplete();
+        void onComplete(Long postId);
     }
 
     public interface DelPostImageListener {

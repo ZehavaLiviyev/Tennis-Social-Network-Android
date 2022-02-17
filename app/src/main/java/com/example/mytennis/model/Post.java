@@ -14,6 +14,7 @@ import java.util.Map;
 public class Post implements Comparable<Post> {
 
     final public static String COLLECTION_NAME = "Posts";
+    final public static String COLLECTION_DELETE_NAME = "DeletePost";
 
 
     @PrimaryKey
@@ -23,6 +24,9 @@ public class Post implements Comparable<Post> {
     String imageUrl;
     String description;
     Long updateData = new Long(0);
+    Boolean display=true;
+
+
 
     public Post() {
     }
@@ -59,7 +63,13 @@ public class Post implements Comparable<Post> {
         return post;
     }
 
+    public Boolean getDisplay() {
+        return display;
+    }
 
+    public void setDisplay(Boolean flag) {
+        this.display = flag;
+    }
     public Long getId() {
         return id;
     }

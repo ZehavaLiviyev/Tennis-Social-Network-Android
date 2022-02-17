@@ -75,7 +75,7 @@ public class EditProfileFragment extends Fragment {
 
     private void setUserDetails() {
         username.setText(Model.instance.getActiveUser().getUserName());
-        if (Model.instance.getActiveUser().getProImageUrl() != null) {
+        if (Model.instance.getActiveUser().getProImageUrl() != null && Model.instance.getActiveUser().getProImageUrl() != "" ) {
             Picasso.get()
                     .load(Model.instance.getActiveUser().getProImageUrl())
                     .into(imgProfile);

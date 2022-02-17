@@ -31,6 +31,7 @@ public class PostDetailsFragment extends Fragment {
 
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -67,16 +68,16 @@ public class PostDetailsFragment extends Fragment {
     }
 
     private void deletePost() {
-
-
-
+        Model.instance.refreshPostsList();
         // TODO:: NAVIGATE TO SOME PAGE
         Model.instance.deletePost(post_, () -> {
             edit_btn.setEnabled(false);
             delete_btn.setEnabled(false);
-            progressBar.setVisibility(View.VISIBLE);
+            postDesc_et.setEnabled(false);
             progressBar.setVisibility(View.VISIBLE);
             Log.d("TAG", "delete successful");
+            Model.instance.refreshPostsList();
+            Navigation.findNavController(view).navigateUp();
         });
     }
 }

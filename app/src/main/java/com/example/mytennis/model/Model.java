@@ -20,6 +20,7 @@ import java.util.concurrent.Executors;
 
 public class Model {
 
+    Long delete_postId;
     User activeUser = null;
     public static final Model instance = new Model();
     ModelFirebase modelFirebase = new ModelFirebase();
@@ -72,9 +73,8 @@ public class Model {
     }
 
     public void deleteUserImage(String proImageName, DeleteUserImageListener listener) {
-        modelFirebase.deleteUserImage(proImageName , listener);
+        modelFirebase.deleteUserImage(proImageName, listener);
     }
-
 
 
     public User getActiveUser() {
@@ -119,6 +119,7 @@ public class Model {
 
                     Long lud = new Long(0);
                     for (Post post : list) {
+
                         AppLocalDb.db.postDao().insertAll(post);
                         if (lud < post.getUpdateData()) {
                             lud = post.getUpdateData();
@@ -151,17 +152,17 @@ public class Model {
 
     /* ************************************ posts *************************************************** */
 
-    public void deletePostImage(Post post,DeletePostImageListener listener) {
+    public void deletePostImage(Post post, DeletePostImageListener listener) {
         modelFirebase.deletePostImage(post, listener, () -> executor.execute(() -> AppLocalDb.db.postDao().delete(post)));
     }
 
 
     public void deletePost(Post post, DeletePostListener listener) {
-        modelFirebase.deletePost(post, listener, () ->
-                executor.execute(() -> {
-                    // delete the post from app local db
-                    AppLocalDb.db.postDao().delete(post);
-                }));
+        modelFirebase.create_postDelete(post);
+        modelFirebase.get_postDelete(postId -> {
+            modelFirebase.deletePost(post, listener);
+            delete_postId = postId;
+        });
     }
 
     public LiveData<PostsListLoadingState> getPostsListLoadingState() {
@@ -184,6 +185,34 @@ public class Model {
 
         modelFirebase.getAllPosts(lastUpdateData, list ->
                 executor.execute(() -> {
+                    Log.d("pos", "size app local sb is: " + AppLocalDb.db.postDao().getAll().size());
+                    modelFirebase.get_postDelete(postId -> delete_postId = postId);
+
+                    // ---------------------------------------------------------------------------------------------------------------------------------- //
+                    for (Post p : AppLocalDb.db.postDao().getAll()) {
+
+                        if (delete_postId != null) {
+                            if (p.getId() == delete_postId) {
+                                Log.d("pos", "size before delete is : " + AppLocalDb.db.postDao().getAll().size());
+                                AppLocalDb.db.postDao().delete(p);
+                                Log.d("pos", "size after delete is : " + AppLocalDb.db.postDao().getAll().size());
+                                p.setDisplay(false);
+                                AppLocalDb.db.postDao().insertAll(p);
+                                Log.d("pos", "size after delete and insert is : " + AppLocalDb.db.postDao().getAll().size());
+
+                            }
+                        }
+                        // ------------------------------------------------------------------------- //
+                        Log.d("pos", "here: " + p.getId());
+                        if (p.getId() > 30) {
+                            Log.d("pos", "id: " + p.getId());
+                            Log.d("pos", "desc: " + p.getDescription());
+                            Log.d("pos", "display: " + p.getDisplay());
+                        }
+                    }
+
+                    // ---------------------------------------------------------------------------------------------------------------------------------- //
+
 
                     Long lud = new Long(0);
                     for (Post post : list) {
@@ -198,13 +227,35 @@ public class Model {
                             .putLong("PostsLastUpdateData", lud)
                             .commit();
 
-                    List<Post> postList = AppLocalDb.db.postDao().getAll();
+                    Log.d("pos", "2 size app local sb is: " + AppLocalDb.db.postDao().getAll().size());
+                    List<Post> tmpList = AppLocalDb.db.postDao().getAll();
 
+                    List<Post> postList = new ArrayList<>();
+
+                    for (Post npo : tmpList) {
+
+                        if (npo.getDisplay().booleanValue() == false) {
+                            AppLocalDb.db.postDao().delete(npo);
+                            Log.d("pos", "display is false: " + npo.getDisplay().booleanValue());
+                        } else {
+                            if (delete_postId != null) {
+                                if (npo.getId() == delete_postId) {
+                                    AppLocalDb.db.postDao().delete(npo);
+                                    npo.setDisplay(false);
+                                    AppLocalDb.db.postDao().insertAll(npo);
+                                } else {
+                                    postList.add(npo);
+                                }
+                            } else {
+                                postList.add(npo);
+                            }
+                        }
+                    }
+                    Log.d("pos", "3 size app local sb is: " + AppLocalDb.db.postDao().getAll().size());
                     // sort the posts lists in descending order
                     Collections.sort(postList, Collections.reverseOrder());
                     postsList.postValue(postList);
                     postsListLoadingState.postValue(PostsListLoadingState.loaded);
-
                 }));
     }
 
