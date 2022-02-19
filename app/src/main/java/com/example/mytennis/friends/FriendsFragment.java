@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.mytennis.R;
+import com.example.mytennis.model.Model;
 import com.example.mytennis.model.User;
 import com.squareup.picasso.Picasso;
 
@@ -53,10 +54,18 @@ public class FriendsFragment extends Fragment {
 
         adapter.setOnItemClickListener((v, position) -> {
             String uEmail = String.valueOf(viewModel.getDataList().getValue().get(position).getEmail());
-            Navigation.findNavController(view).navigate(FriendsFragmentDirections.actionSearchFragmentToUserFragment(uEmail));
-            Log.d("TAG", "row was clicked " + position);
-        });
 
+            if (uEmail.equals(Model.instance.getActiveUser().getEmail())) {
+                Navigation.findNavController(view)
+                        .navigate(FriendsFragmentDirections
+                                .actionGlobalProfileFragment());
+            } else {
+                Navigation.findNavController(view)
+                        .navigate(FriendsFragmentDirections
+                                .actionSearchFragmentToUserFragment(uEmail));
+            }
+
+        });
 
 
         return view;
