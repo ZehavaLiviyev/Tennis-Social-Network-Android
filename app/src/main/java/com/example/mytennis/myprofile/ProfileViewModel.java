@@ -13,7 +13,7 @@ public class ProfileViewModel extends ViewModel {
     LiveData<List<Post>> data;
 
     public ProfileViewModel() {
-        data = Model.instance.getAllPostsForUser();
+        data = Model.instance.getAllPostsForUser(Model.instance.getActiveUser().getEmail());
     }
 
     public LiveData<List<Post>> getPostsData() {

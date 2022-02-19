@@ -85,7 +85,7 @@ public class LoginFragment extends Fragment {
 
 
         Model.instance.loginUser(email, password, () -> {
-            Model.instance.refreshUserPostsList();
+            Model.instance.refreshUserPostsList(Model.instance.getActiveUser().getEmail());
             Navigation.findNavController(view)
                     .navigate(LoginFragmentDirections
                             .actionLoginFragmentToFeedRvFragment(email));

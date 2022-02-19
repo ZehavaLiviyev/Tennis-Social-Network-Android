@@ -26,8 +26,9 @@ import com.squareup.picasso.Picasso;
 
 public class ProfileFragment extends Fragment {
 
-    User user;
+
     View view;
+    User user;
     ImageView photoImv;
     TextView usernameTv;
     ProfileAdapter adapter;
@@ -54,8 +55,9 @@ public class ProfileFragment extends Fragment {
         usernameTv = view.findViewById(R.id.frag_profile_usern_tv);
         logout_btn = view.findViewById(R.id.frag_profile_logout_btn);
         swipeRefresh = view.findViewById(R.id.profilePostslist_swiperefresh);
+
         viewModel.getPostsData().observe(getViewLifecycleOwner(), list1 -> refresh());
-        swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshUserPostsList());
+        swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshUserPostsList(Model.instance.getActiveUser().getEmail()));
         swipeRefresh.setRefreshing(
                 Model.instance.getPostsListLoadingState()
                         .getValue() == Model.PostsListLoadingState.loading
@@ -99,7 +101,7 @@ public class ProfileFragment extends Fragment {
     private void setUserDetails() {
         photoImv.setImageResource(R.drawable.avatar_logo);
         usernameTv.setText(user.getUserName());
-        if (user.getProImageUrl() != null&&user.getProImageUrl()!="") {
+        if (user.getProImageUrl() != null && user.getProImageUrl() != "") {
             Picasso.get()
                     .load(Model.instance.getActiveUser().getProImageUrl())
                     .into(photoImv);
@@ -148,7 +150,7 @@ public class ProfileFragment extends Fragment {
             });
         }
 
-        void bind(Post post, String userName , String userImage) {
+        void bind(Post post, String userName, String userImage) {
             desc_tv.setText(post.getDescription());
             post_imv.setImageResource(R.drawable.postimage);
             postUser_iv.setImageResource(R.drawable.avatar_logo);
@@ -158,7 +160,7 @@ public class ProfileFragment extends Fragment {
                         .load(post.getImageUrl())
                         .into(post_imv);
             }
-            if(userImage!=null&&userImage!=""){
+            if (userImage != null && userImage != "") {
                 Picasso.get()
                         .load(userImage)
                         .into(postUser_iv);
@@ -188,12 +190,12 @@ public class ProfileFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull ProfileViewHolder holder, int position) {
             Post post = viewModel.getPostsData().getValue().get(position);
-            User u =  Model.instance.getActiveUser();
-            String postUserName =u.getUserName();
+            User u = Model.instance.getActiveUser();
+            String postUserName = u.getUserName();
             String postUserImage = u.getProImageUrl();
 
 
-            holder.bind(post, postUserName , postUserImage);
+            holder.bind(post, postUserName, postUserImage);
         }
 
         @Override

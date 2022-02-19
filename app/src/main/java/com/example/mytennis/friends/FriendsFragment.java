@@ -1,4 +1,4 @@
-package com.example.mytennis.search;
+package com.example.mytennis.friends;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -6,17 +6,14 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,32 +21,27 @@ import com.example.mytennis.R;
 import com.example.mytennis.model.User;
 import com.squareup.picasso.Picasso;
 
-public class SearchFragment extends Fragment {
+public class FriendsFragment extends Fragment {
 
     View view;
-   // EditText search_view_et;
-  //  ImageButton search_btn;
     RecyclerView list;
-    SearchViewModel viewModel;
+    FriendsViewModel viewModel;
     SearchUserAdapter adapter;
-   // TextView tV;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
+        viewModel = new ViewModelProvider(this).get(FriendsViewModel.class);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.fragment_search, container, false);
-        //search_view_et = view.findViewById(R.id.search_textField_et);
-       // search_btn = view.findViewById(R.id.search__searchBtn);
+        view = inflater.inflate(R.layout.fragment_friends, container, false);
+
         list = view.findViewById(R.id.search_rv);
 
-      //  tV = view.findViewById(R.id.text_test);
 
         adapter = new SearchUserAdapter();
         list.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -59,35 +51,13 @@ public class SearchFragment extends Fragment {
         viewModel.getDataList().observe(getViewLifecycleOwner(), list1 -> refresh());
 
 
-        adapter.setOnItemClickListener((v, position) ->
-                Log.d("TAG", "row was clicked " + position));
-
-/*
-
-        search_view_et.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                for (User user : viewModel.getDataList().getValue()) {
-                    if (user.getUserName().contains(s.toString())) {
-                        viewModel.data.getValue().add(user);
-                    }
-                }
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                Log.d("after search", s.toString());
-            }
+        adapter.setOnItemClickListener((v, position) -> {
+            String uEmail = String.valueOf(viewModel.getDataList().getValue().get(position).getEmail());
+            Navigation.findNavController(view).navigate(FriendsFragmentDirections.actionSearchFragmentToUserFragment(uEmail));
+            Log.d("TAG", "row was clicked " + position);
         });
 
-*/
+
 
         return view;
     }
@@ -130,7 +100,7 @@ public class SearchFragment extends Fragment {
 
     }
 
-    class SearchUserAdapter extends RecyclerView.Adapter<SearchFragment.SearchUserViewHolder> {
+    class SearchUserAdapter extends RecyclerView.Adapter<FriendsFragment.SearchUserViewHolder> {
 
         OnItemClickListener listener;
 
@@ -141,7 +111,7 @@ public class SearchFragment extends Fragment {
         @NonNull
         @Override
         public SearchUserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = getLayoutInflater().inflate(R.layout.search_user_row, parent, false);
+            View view = getLayoutInflater().inflate(R.layout.friends_user_row, parent, false);
             SearchUserViewHolder holder = new SearchUserViewHolder(view, listener);
             return holder;
         }

@@ -68,6 +68,16 @@ public class Model {
 
     /* ************************************ users *************************************************** */
 
+    public void getUserByEmail(String eMail,GetUserByEmailListener listener) {
+        modelFirebase.getUserByUserEmail(eMail, new GetUserByUserName() {
+            @Override
+            public void onComplete(User user) {
+                listener.onComplete(user);
+            }
+        });
+    }
+
+
     public void getCurrentUser(GetCurrentUserListener listener) {
         modelFirebase.getCurrentUser(listener);
     }
@@ -98,15 +108,15 @@ public class Model {
         return usersList;
     }
 
-    public LiveData<List<Post>> getAllPostsForUser() {
+    public LiveData<List<Post>> getAllPostsForUser(String userEmail_) {
         if (postsListForUser.getValue() == null) {
-            refreshUserPostsList();
+            refreshUserPostsList(userEmail_);
         }
         return postsListForUser;
     }
 
 
-    public void refreshUserPostsList() {
+    public void refreshUserPostsList(String userEmail_) {
 
         postsListLoadingState.setValue(PostsListLoadingState.loading);
 
@@ -135,7 +145,7 @@ public class Model {
                     List<Post> userPostList = new ArrayList<Post>();
 
                     for (Post post : postList) {
-                        if (post.getPostUser().equals(activeUser.getEmail())) {
+                        if (post.getPostUser().equals(userEmail_)) {
                             Log.d("TAG", "email active user is " + post.getPostUser());
                             userPostList.add(post);
                         }
@@ -280,6 +290,9 @@ public class Model {
 
     /* ************************************ interface *********************************************** */
 
+    public interface GetUserByEmailListener {
+        void onComplete(User user);
+    }
 
     public interface DeletePostImageListener {
         void onComplete(Boolean flag);

@@ -56,7 +56,10 @@ public class FeedRvFragment extends Fragment {
         viewModel.getPostsData().observe(getViewLifecycleOwner(), list1 -> refresh());
 
         swipeRefresh = view.findViewById(R.id.postslist_swiperefresh);
-        swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshPostsList());
+        swipeRefresh.setOnRefreshListener(() -> {
+            Model.instance.refreshPostsList();
+            Model.instance.refreshPostsList();
+        });
         swipeRefresh.setRefreshing(
                 Model.instance.getPostsListLoadingState()
                         .getValue() == Model.PostsListLoadingState.loading
@@ -204,7 +207,7 @@ public class FeedRvFragment extends Fragment {
                     break;
 
                 case R.id.menu_profile:
-                    Model.instance.refreshUserPostsList();
+                    Model.instance.refreshUserPostsList(Model.instance.getActiveUser().getEmail());
                     Navigation.findNavController(this.view).navigate(R.id.action_global_profileFragment);
                     break;
 
@@ -212,7 +215,7 @@ public class FeedRvFragment extends Fragment {
                     Navigation.findNavController(this.view).navigate(R.id.action_global_addPostFragment);
                     break;
 
-                case R.id.menu_search:
+                case R.id.menu_friends:
                     Navigation.findNavController(this.view).navigate(R.id.action_global_searchFragment);
                     break;
 

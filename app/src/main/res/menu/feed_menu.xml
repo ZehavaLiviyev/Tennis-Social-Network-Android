@@ -9,10 +9,10 @@
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_addPost"
-        android:title="add" />
+        android:title="Add Post" />
     <item
-        android:id="@+id/menu_search"
-        android:title="Search" />
+        android:id="@+id/menu_friends"
+        android:title="Friends" />
     <item
         android:id="@+id/menu_about"
         android:title="About" />

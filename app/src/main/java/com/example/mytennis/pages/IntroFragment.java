@@ -1,4 +1,4 @@
-package com.example.mytennis;
+package com.example.mytennis.pages;
 
 import android.os.Bundle;
 
@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.mytennis.R;
 import com.example.mytennis.model.Model;
 import com.example.mytennis.model.User;
 
