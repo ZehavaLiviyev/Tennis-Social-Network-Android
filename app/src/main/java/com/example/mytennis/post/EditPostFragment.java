@@ -105,8 +105,9 @@ public class EditPostFragment extends Fragment {
                     save_btn.setEnabled(false);
                     galleryBtn.setEnabled(false);
                     progressBar.setVisibility(View.VISIBLE);
-                    Model.instance.refreshPostsList();
+                    Model.instance.refreshUserPostsList(Model.instance.getActiveUser().getEmail());
                     Navigation.findNavController(view).navigateUp();
+                    Model.instance.refreshUserPostsList(Model.instance.getActiveUser().getEmail());
 
                 });
             });
