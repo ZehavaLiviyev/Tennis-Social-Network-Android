@@ -3,7 +3,6 @@ package com.example.mytennis.model;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-//TODO: חייב אימפורט לפיירבייס?
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
 

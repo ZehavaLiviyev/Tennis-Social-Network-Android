@@ -100,7 +100,7 @@ public class FriendsFragment extends Fragment {
         void bind(User user) {
             userName_tv.setText(user.getUserName());
 
-            if (user.getProImageUrl() != null) {
+            if (user.getProImageUrl() != null&&user.getProImageUrl() != "") {
                 Picasso.get()
                         .load(user.getProImageUrl())
                         .into(user_iv);

@@ -207,7 +207,9 @@ public class FeedRvFragment extends Fragment {
                     break;
 
                 case R.id.menu_profile:
-                    Model.instance.refreshUserPostsList(Model.instance.getActiveUser().getEmail());
+                    if(Model.instance.getActiveUser().getEmail()!=null){
+                        Model.instance.refreshUserPostsList(Model.instance.getActiveUser().getEmail());
+                    }
                     Navigation.findNavController(this.view).navigate(R.id.action_global_profileFragment);
                     break;
 

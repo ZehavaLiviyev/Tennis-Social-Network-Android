@@ -69,7 +69,6 @@ public class PostDetailsFragment extends Fragment {
 
     private void deletePost() {
         Model.instance.refreshPostsList();
-        // TODO:: NAVIGATE TO SOME PAGE
         Model.instance.deletePost(post_, () -> {
             edit_btn.setEnabled(false);
             delete_btn.setEnabled(false);

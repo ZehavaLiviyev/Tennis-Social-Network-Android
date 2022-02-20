@@ -29,10 +29,6 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        //TODO::
-        // search
-        // לעבור על הבהרות הפרוייקט
-
 
         view = inflater.inflate(R.layout.fragment_login, container, false);
 
@@ -85,7 +81,11 @@ public class LoginFragment extends Fragment {
 
 
         Model.instance.loginUser(email, password, () -> {
-            Model.instance.refreshUserPostsList(Model.instance.getActiveUser().getEmail());
+
+            if(Model.instance.getActiveUser().getEmail()!=null){
+                Model.instance.refreshUserPostsList(Model.instance.getActiveUser().getEmail());
+            }
+
             Navigation.findNavController(view)
                     .navigate(LoginFragmentDirections
                             .actionLoginFragmentToFeedRvFragment(email));

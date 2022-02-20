@@ -12,7 +12,7 @@ import java.util.List;
 public class FriendsViewModel extends ViewModel {
 
     LiveData<List<User>> data;
-    // LiveData<List<User>> matchData;
+
 
     public FriendsViewModel() {
         data = Model.instance.getAllUsers();
@@ -23,22 +23,8 @@ public class FriendsViewModel extends ViewModel {
         return data;
     }
 
-    public void setDataList(LiveData<List<User>> data) {
-        this.data = data;
-    }
-
-    /*public LiveData<List<User>> getMatchDataList() {
-        return matchData;
-    }
 
 
-    public void findUsingLoop(String search) {
-        for(User user: data.getValue()) {
-            if (user.getUserName().contains(search)) {
-                matchData.getValue().add(user);
-            }
-        }
-    }
-*/
+
 
 }
